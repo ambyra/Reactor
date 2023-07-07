@@ -4,6 +4,7 @@ using UnityEngine.Tilemaps;
 public class Board : MonoBehaviour{
     public Tilemap tilemap;
     public Game game;
+    //git
 
     public ShapeData[] shapes;
     public Vector2Int boardSize = new Vector2Int(30, 30);
