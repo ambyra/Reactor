@@ -17,7 +17,7 @@ public class Game : MonoBehaviour{
         addPlayer("top");
         addPlayer("bottom");
         // addPlayer("left");
-        // addPlayer("right");
+        // addPlayer("right");//
 
         CurrentPlayer = Players[0];
     }
