@@ -46,6 +46,8 @@
      <Compile Include="Assets/Scripts/Board.cs" />
      <Compile Include="Assets/Scripts/Data.cs" />
      <Compile Include="Assets/Scripts/Piece.cs" />
+     <Compile Include="Assets/Scripts/Settings.cs" />
+     <Compile Include="Assets/Scripts/Core.cs" />
     <Reference Include="UnityEngine">
         <HintPath>/Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
