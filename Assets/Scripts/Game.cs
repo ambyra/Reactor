@@ -16,10 +16,18 @@ public class Game : MonoBehaviour{
         Settings = GameObject.Find("Game").GetComponent<Settings>();
         Core = GameObject.Find("Core").GetComponent<Core>();
 
-        addPlayer("top");
+        //addPlayer("top");
         //addPlayer("bottom");
         //addPlayer("left");
         //addPlayer("right");
+    }
+
+    void Update(){
+        //todo: rotate auto after 3 beats
+        //      - clear unset tiles
+        //      - rotate board
+        
+        if (Input.GetKeyDown(KeyCode.R)) Board.Rotate(1);
     }
     
     void addPlayer(string position){

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Core : MonoBehaviour{
-    public Vector3Int center = new Vector3Int(-1,-1,0);
 
     public Board board;
 
@@ -12,7 +11,9 @@ public class Core : MonoBehaviour{
     }
     
     void Start(){
-        board.Set(Shape.O, center);
+        board.Set(Shape.O, new Vector3Int(-1,-1,0));
+        board.Set(Shape.O, new Vector3Int(2,-1,0));
+        //board.tilemap.SetTile(newPos[i], board.shapes[(int)Shape.O].tile);
     }
 
     // public void ClearLines(){

@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class Piece : MonoBehaviour{
+public class Piece : MonoBehaviour
+{
     public ShapeData data;
     public Vector3Int[] cells;
     public Vector3Int position;
