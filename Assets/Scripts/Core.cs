@@ -17,7 +17,7 @@ public class Core : MonoBehaviour{
     }
 
     // public void ClearLines(){
-    //     Debug.Log("Clearing lines");
+    //     print("Clearing lines");
     //     RectInt bounds = Bounds;
     //     int row = bounds.yMin;
 
@@ -48,7 +48,7 @@ public class Core : MonoBehaviour{
     // }
 
     // public void LineClear(int row){
-    //     Debug.Log("Clearing line " + row);
+    //     print ("Clearing line " + row);
     //     RectInt bounds = Bounds;
 
     //     // Clear all tiles in the row

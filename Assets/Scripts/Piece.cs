@@ -7,6 +7,7 @@ public class Piece : MonoBehaviour
     public Vector3Int position;
     public Vector2Int direction;
     public int rotationIndex;
+    public bool isLocked {get; private set;}
 
     public Game game;
     public Board board;
@@ -19,6 +20,7 @@ public class Piece : MonoBehaviour
         game = GameObject.Find("Game").GetComponent<Game>();
         board = GameObject.Find("Board").GetComponent<Board>();
         rotationIndex = 0;
+        isLocked = false;
         direction = Vector2Int.zero;
     }
 
@@ -57,6 +59,7 @@ public class Piece : MonoBehaviour
     public void Lock()
     {
         board.Set(this);
+        isLocked = true;
         //board.ClearLines();
     }
 
@@ -65,16 +68,15 @@ public class Piece : MonoBehaviour
         newPosition.x += translation.x;
         newPosition.y += translation.y;
 
-        bool valid = board.IsValidPosition(this, newPosition);
+        bool isValid = board.IsValidPosition(this, newPosition);
 
         // Only save the movement if the new position is valid
-        if (valid)
-        {
+        if (isValid){
             position = newPosition;
             moveTime = Time.time + game.Settings.moveDelay;
             lockTime = 0f; // reset
         }
-        return valid;
+        return isValid;
     }
 
         private void Rotate(int direction){

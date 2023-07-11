@@ -10,13 +10,33 @@ public class Game : MonoBehaviour{
     public Settings Settings;
     public Core Core;
 
+    //idea: if piece collides with other piece, 
+    //      pieces merge, both players control, 
+    //      can clear more than 4 layers at once
+
+    //todo:
+    // - add players
+    // - grid over stars background
+
+    //sequence: 
+    // - count players
+    // - foreach player drop piece:
+    //      - each player gets own piece color
+    //      - if piece collides with other piece, clear both
+    //      - if piece collides with core, lock it, turn white
+    //      - if piece collides with wall, lock it, turn black
+    // - when no pieces left, rotate board
+
+    //todo: wall kicks for sides
+    //todo: timer for all objects
+
     void Awake(){
         Board = GameObject.Find("Board").GetComponent<Board>();
         Tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
         Settings = GameObject.Find("Game").GetComponent<Settings>();
         Core = GameObject.Find("Core").GetComponent<Core>();
 
-        //addPlayer("top");
+        addPlayer("top");
         //addPlayer("bottom");
         //addPlayer("left");
         //addPlayer("right");
@@ -26,7 +46,7 @@ public class Game : MonoBehaviour{
         //todo: rotate auto after 3 beats
         //      - clear unset tiles
         //      - rotate board
-        
+
         if (Input.GetKeyDown(KeyCode.R)) Board.Rotate(1);
     }
     

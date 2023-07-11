@@ -178,6 +178,7 @@ GameObject:
   m_Component:
   - component: {fileID: 446489907}
   - component: {fileID: 446489906}
+  - component: {fileID: 446489908}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -201,7 +202,8 @@ MonoBehaviour:
   Players: []
   Board: {fileID: 0}
   Tilemap: {fileID: 0}
-  CurrentPlayer: {fileID: 0}
+  Settings: {fileID: 0}
+  Core: {fileID: 0}
 --- !u!4 &446489907
 Transform:
   m_ObjectHideFlags: 0
@@ -217,6 +219,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &446489908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 446489905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07fb60eca218142568651e82e58e1128, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stepDelay: 1
+  moveDelay: 0.1
+  lockDelay: 0.5
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -309,6 +326,51 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1461344171
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1461344173}
+  - component: {fileID: 1461344174}
+  m_Layer: 0
+  m_Name: Core
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1461344173
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1461344171}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1461344174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1461344171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 052cd121a898243a995e22b1994166e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  board: {fileID: 0}
 --- !u!1 &1607523539
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,18 +526,25 @@ MonoBehaviour:
   shapes:
   - tile: {fileID: 11400000, guid: 7864c6e5ce640448abbcc89116320095, type: 2}
     shape: 0
+    cells: []
   - tile: {fileID: 11400000, guid: e99fbc83520ae4f4083d9827c7de43cc, type: 2}
     shape: 1
+    cells: []
   - tile: {fileID: 11400000, guid: f33d21d4ba7ca4c868df2235a5fee9ed, type: 2}
     shape: 2
+    cells: []
   - tile: {fileID: 11400000, guid: 2de0d1f5e0d894b3b88741baed7afce8, type: 2}
     shape: 3
+    cells: []
   - tile: {fileID: 11400000, guid: 7e88c5419513a4059961c8d2784b9001, type: 2}
     shape: 4
+    cells: []
   - tile: {fileID: 11400000, guid: f413c1d9b31ed41c599d2b29d68d8f10, type: 2}
     shape: 5
+    cells: []
   - tile: {fileID: 11400000, guid: 5d9bc1b091347403d9562ea038f11662, type: 2}
     shape: 6
+    cells: []
   boardSize: {x: 10, y: 20}
 --- !u!156049354 &2065725145
 Grid:

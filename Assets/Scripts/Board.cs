@@ -26,7 +26,7 @@ public class Board : MonoBehaviour{
     public void GameOver()
     {
         tilemap.ClearAllTiles();
-        Debug.Log("Game Over!");
+        print("Game Over!");
     }
 
     public void Set(Piece piece){
@@ -46,51 +46,23 @@ public class Board : MonoBehaviour{
 
     public void Rotate(int direction){
         int d = direction;
-        //get cells
-        //make new array
-        //rotate cells
-        //set cells in new array
-
-        float[] m = Data.RotationMatrix;
+        int size = 10;
+        int s = size;
         List<Vector3Int> newPos = new List<Vector3Int>();
 
-        for (int x = -5; x<5; x++){ for (int y = -5; y<5; y++){
-            if (tilemap.HasTile(new Vector3Int(x, y, 0))){
-                print("tile at " + x + ", " + y);
-                // int newX = Mathf.RoundToInt((x * m[0] * d) + (y * m[1] * d));
-                // int newY = Mathf.RoundToInt((x * m[2] * d) + (y * m[3] * d));
-                int newX = y;
-                int newY = -x;
-                newPos.Add(new Vector3Int(newX, newY-1, 0));
+        for (int x = -s; x<s; x++){
+            for (int y = -s; y<s; y++){
+                if (tilemap.HasTile(new Vector3Int(x, y, 0))){
+                    newPos.Add(new Vector3Int(y, -x - 1, 0));
             }
         }}
+
         tilemap.ClearAllTiles();
+
         for (int i = 0; i < newPos.Count; i++){
             tilemap.SetTile(newPos[i], shapes[(int)Shape.O].tile);
         }
     }
-
-    
-
-
-
-    //x = Mathf.RoundToInt((cell.x * matrix[0] * direction) + (cell.y * matrix[1] * direction));
-    //y = Mathf.RoundToInt((cell.x * matrix[2] * direction) + (cell.y * matrix[3] * direction));
-
-    // for (int x = 0; x < bounds.size.x; x++) {
-    //     for (int y = 0; y < bounds.size.y; y++) {
-    //         TileBase tile = allTiles[x + y * bounds.size.x];
-    //         if (tile != null) {
-    //             Vector3Int tilePosition = new Vector3Int(x + bounds.xMin, y + bounds.yMin, 0);
-    //             Vector3Int offset = tilePosition - center;
-    //             Matrix4x4 matrix = Matrix4x4.Rotate(Quaternion.Euler(0, 0, -90));
-    //             Vector3Int newPosition = center + new Vector3Int(Mathf.RoundToInt(offset.x * matrix[0] + offset.y * matrix[1]), Mathf.RoundToInt(offset.x * matrix[2] + offset.y * matrix[3]), 0);
-    //             tilemap.SetTile(newPosition, tile);
-    //             tilemap.SetTile(tilePosition, null);
-    //         }
-    //     }
-    // }
-    // }
 
     public void Clear(Piece piece){
         for (int i = 0; i < piece.cells.Length; i++){
