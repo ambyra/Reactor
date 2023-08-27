@@ -179,6 +179,7 @@ GameObject:
   - component: {fileID: 446489907}
   - component: {fileID: 446489906}
   - component: {fileID: 446489908}
+  - component: {fileID: 446489909}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -200,10 +201,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerPrefab: {fileID: 7225152261668929255, guid: bc83ca97c2c6145fd96f88a276a7abe7, type: 3}
   Players: []
-  Board: {fileID: 0}
-  Tilemap: {fileID: 0}
-  Settings: {fileID: 0}
-  Core: {fileID: 0}
+  board: {fileID: 0}
+  tilemap: {fileID: 0}
+  settings: {fileID: 0}
+  core: {fileID: 0}
+  player1: {fileID: 0}
 --- !u!4 &446489907
 Transform:
   m_ObjectHideFlags: 0
@@ -231,9 +233,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07fb60eca218142568651e82e58e1128, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stepDelay: 1
+  stepDelay: 0.5
   moveDelay: 0.1
   lockDelay: 0.5
+--- !u!114 &446489909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 446489905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 216ecdcac9f65455ea0349d7240a4464, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -295,7 +309,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 12
+  orthographic size: 15
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -544,6 +558,9 @@ MonoBehaviour:
     cells: []
   - tile: {fileID: 11400000, guid: 5d9bc1b091347403d9562ea038f11662, type: 2}
     shape: 6
+    cells: []
+  - tile: {fileID: 11400000, guid: 49a4b7cd10c67407795daefe9c0a1752, type: 2}
+    shape: 7
     cells: []
   boardSize: {x: 10, y: 20}
 --- !u!156049354 &2065725145

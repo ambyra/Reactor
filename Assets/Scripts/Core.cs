@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Core : MonoBehaviour{
+    //todo: - function to check for core rings
 
     public Board board;
 
@@ -11,9 +12,13 @@ public class Core : MonoBehaviour{
     }
     
     void Start(){
-        board.Set(Shape.O, new Vector3Int(-1,-1,0));
-        board.Set(Shape.O, new Vector3Int(2,-1,0));
+        board.Set(Shape.C, new Vector3Int(-1,-1,0));
+        //board.Set(Shape.O, new Vector3Int(2,-1,0));
         //board.tilemap.SetTile(newPos[i], board.shapes[(int)Shape.O].tile);
+    }
+
+    void checkForRings(){
+        //check for layer 1 ring: if so, check for layer 2 ring, etc, 
     }
 
     // public void ClearLines(){

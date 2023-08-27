@@ -17,19 +17,18 @@ public class Player : MonoBehaviour
     public Vector2Int FallDirection;
     public Tile PlayerTile; //each player gets own color
 
-    void Start(){
+    void Awake(){
         activePiece = GetComponent<Piece>();
-        //activePiece.Initialize(Shape.T, SpawnPosition, FallDirection);
     }
 
     public void NewPiece(Shape shape){
         activePiece.Initialize(shape, SpawnPosition, FallDirection);
     }
 
-    void NewPiece(){
+    public void NewPiece(){
         //todo: convert to bag system
         int shapes = System.Enum.GetNames(typeof(Shape)).Length;
-        Shape shape = (Shape) Random.Range(0, shapes);
+        Shape shape = (Shape) Random.Range(0, shapes-1);
         activePiece.Initialize(shape, SpawnPosition, FallDirection);
     }
 }

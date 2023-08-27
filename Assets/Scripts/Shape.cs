@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public enum Shape{I, J, L, O, S, T, Z}
+public enum Shape{I, J, L, O, S, T, Z, C}
 
 [System.Serializable]
 public struct ShapeData{

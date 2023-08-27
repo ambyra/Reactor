@@ -12,6 +12,12 @@ public class Piece : MonoBehaviour
     public Game game;
     public Board board;
 
+    public bool MoveLeft;
+    public bool MoveRight;
+    public bool MoveDown;
+    public bool RotateLeft;
+    public bool RotateRight;
+    
     private float stepTime;
     private float moveTime;
     private float lockTime;
@@ -24,165 +30,147 @@ public class Piece : MonoBehaviour
         direction = Vector2Int.zero;
     }
 
+    void Update(){
+        board.Clear(this);
+        
+        lockTime += Time.deltaTime;
+        if (Time.time > stepTime) step();
+
+        bool isMoveable = Time.time > moveTime && !isLocked;
+        if(isMoveable){
+            if(MoveLeft)Move(Vector2Int.left);
+            if(MoveRight)Move(Vector2Int.right);
+            if(MoveDown){
+                stepTime = Time.time + game.settings.stepDelay;
+                Move(Vector2Int.down);
+            }
+
+            if(RotateLeft)Rotate(-1);
+            if(RotateRight)Rotate(1);
+        }
+        
+        MoveLeft = false;
+        MoveRight = false;
+        MoveDown = false;
+        RotateLeft = false;
+        RotateRight = false;
+        
+        board.Set(this);
+    }
+
     public void Initialize(Shape shape, Vector3Int position, Vector2Int direction){
+        isLocked = false;
         data = board.shapes[(int)shape];
         this.position = position;
         this.direction = direction;
 
-        stepTime = Time.time + game.Settings.stepDelay;
-        moveTime = Time.time + game.Settings.moveDelay;
+        stepTime = Time.time + game.settings.stepDelay;
+        moveTime = Time.time + game.settings.moveDelay;
         lockTime = 0f;
 
         cells = new Vector3Int[data.cells.Length];
         for (int i = 0; i < cells.Length; i++) {
             cells[i] = (Vector3Int)data.cells[i];
         }
-        game.Board.Set(this);
     }
 
-    void Update(){
-        game.Board.Clear(this);
-
-        lockTime += Time.deltaTime;
-        // if (Time.time > moveTime) HandleMoveInputs();
-        if (Time.time > stepTime) Step();
-
-        game.Board.Set(this);
-    }
-
-    private void Step(){
-        stepTime = Time.time + game.Settings.stepDelay;
+    private void step(){
+        stepTime = Time.time + game.settings.stepDelay;
         Move(direction);
-        if (lockTime >= game.Settings.lockDelay) Lock();
+        if (lockTime >= game.settings.lockDelay) Lock();
     }
 
-    public void Lock()
-    {
+    public void Lock(){
         board.Set(this);
         isLocked = true;
         //board.ClearLines();
     }
 
-    private bool Move(Vector2Int translation){
+    private void translateTiles(Vector2Int translation){
         Vector3Int newPosition = position;
         newPosition.x += translation.x;
         newPosition.y += translation.y;
+        position = newPosition;
+    }
 
-        bool isValid = board.IsValidPosition(this, newPosition);
+    private bool Move(Vector2Int translation){
 
-        // Only save the movement if the new position is valid
-        if (isValid){
-            position = newPosition;
-            moveTime = Time.time + game.Settings.moveDelay;
+        Vector3Int originalPosition = position;
+        translateTiles(translation);
+        bool isValid = board.IsValidPosition(this, position);
+        if(isValid){
+            moveTime = Time.time + game.settings.moveDelay;
             lockTime = 0f; // reset
+        }
+        else{
+            position = originalPosition;
         }
         return isValid;
     }
 
-        private void Rotate(int direction){
+    private void rotateTiles(int direction){
         float[] matrix = Data.RotationMatrix;
-
-        // Rotate all of the cells using the rotation matrix
         for (int i = 0; i < cells.Length; i++){
             Vector3 cell = cells[i];
             int x, y;
-
             switch (data.shape){
                 case Shape.I:
                 case Shape.O:
-                    // "I" and "O" are rotated from an offset center point
                     cell.x -= 0.5f;
                     cell.y -= 0.5f;
                     x = Mathf.CeilToInt((cell.x * matrix[0] * direction) + (cell.y * matrix[1] * direction));
                     y = Mathf.CeilToInt((cell.x * matrix[2] * direction) + (cell.y * matrix[3] * direction));
                     break;
-
                 default:
                     x = Mathf.RoundToInt((cell.x * matrix[0] * direction) + (cell.y * matrix[1] * direction));
                     y = Mathf.RoundToInt((cell.x * matrix[2] * direction) + (cell.y * matrix[3] * direction));
                     break;
             }
-
             cells[i] = new Vector3Int(x, y, 0);
         }
     }
 
-    // private void HardDrop()
-    // {
-    //     while (Move(player.FallDirection)) {
-    //         continue;
-    //     }
-    //     Lock();
-    // }
+    private void Rotate(int direction){
+        int originalRotation = rotationIndex;
+        rotationIndex = wrap(rotationIndex + direction, 0, 4);
+        rotateTiles(direction);
+        if (!board.IsValidPosition(this, position)){
+            if(!tryWallKick(direction)){
+                rotateTiles(-direction);
+                rotationIndex = originalRotation;
+            }
+        }
 
-    // private void HandleMoveInputs()
-    // {
-    //     // Soft drop movement
-    //     if (Input.GetKey(KeyCode.S))
-    //     {
-    //         Move(Vector2Int.down);
-    //             // Update the step time to prevent double movement
-    //         stepTime = Time.time + stepDelay;
-    //     }
+    }
 
-    //     // Left/right movement
-    //     if (Input.GetKey(KeyCode.A)) {
-    //         Move(Vector2Int.left);
-    //     } else if (Input.GetKey(KeyCode.D)) {
-    //         Move(Vector2Int.right);
-    //     }
-    // }
+    private bool tryMove(Vector2Int translation){
+        Vector3Int newPosition = position;
+        newPosition.x += translation.x;
+        newPosition.y += translation.y;
+        return board.IsValidPosition(this, newPosition);
+    }
 
-    // private void Rotate(int direction){
-    //     // Store the current rotation in case the rotation fails
-    //     // and we need to revert
-    //     int originalRotation = rotationIndex;
+    private bool tryWallKick(int rotationDirection){
+        int wallKickIndex = getWallKickIndex(rotationIndex, rotationDirection);
+        for (int i = 0; i < data.wallKicks.GetLength(1); i++){
+            Vector2Int translation = data.wallKicks[wallKickIndex, i];
+            if(tryMove(translation)){
+                Move(translation);
+                return true;
+            }
+        }
+        return false;
+    }
 
-    //     // Rotate all of the cells using a rotation matrix
-    //     rotationIndex = Wrap(rotationIndex + direction, 0, 4);
-    //     ApplyRotationMatrix(direction);
+    private int getWallKickIndex(int rotationIndex, int rotationDirection){
+        int wallKickIndex = rotationIndex * 2;
+        if (rotationDirection < 0) wallKickIndex--;
+        return wrap(wallKickIndex, 0, data.wallKicks.GetLength(0));
+    }
 
-    //     // Revert the rotation if the wall kick tests fail
-    //     if (!TestWallKicks(rotationIndex, direction))
-    //     {
-    //         rotationIndex = originalRotation;
-    //         ApplyRotationMatrix(-direction);
-    //     }
-    // }
-
-
-
-    // private bool TestWallKicks(int rotationIndex, int rotationDirection){
-    //     int wallKickIndex = GetWallKickIndex(rotationIndex, rotationDirection);
-
-    //     for (int i = 0; i < data.wallKicks.GetLength(1); i++)
-    //     {
-    //         Vector2Int translation = data.wallKicks[wallKickIndex, i];
-
-    //         if (Move(translation)) {
-    //             return true;
-    //         }
-    //     }
-
-    //     return false;
-    // }
-
-    // private int GetWallKickIndex(int rotationIndex, int rotationDirection){
-    //     int wallKickIndex = rotationIndex * 2;
-
-    //     if (rotationDirection < 0) {
-    //         wallKickIndex--;
-    //     }
-
-    //     return Wrap(wallKickIndex, 0, data.wallKicks.GetLength(0));
-    // }
-
-    // private int Wrap(int input, int min, int max){
-    //     if (input < min) {
-    //         return max - (min - input) % (max - min);
-    //     } else {
-    //         return min + (input - min) % (max - min);
-    //     }
-    // }
+    private int wrap(int input, int min, int max){
+        if (input < min) return max - (min - input) % (max - min);
+        return min + (input - min) % (max - min);
+    }
 
 }
