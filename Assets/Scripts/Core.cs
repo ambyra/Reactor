@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Tilemaps;
 public class Core : MonoBehaviour{
     //todo: - function to check for core rings
 
@@ -13,9 +13,24 @@ public class Core : MonoBehaviour{
     
     void Start(){
         board.Set(Shape.C, new Vector3Int(-1,-1,0));
+        //PrintTileLocations();
+
+
         //board.Set(Shape.O, new Vector3Int(2,-1,0));
         //board.tilemap.SetTile(newPos[i], board.shapes[(int)Shape.O].tile);
     }
+
+    void PrintTileLocations() {
+    for (int x = board.tilemap.cellBounds.xMin; x < board.tilemap.cellBounds.xMax; x++) {
+        for (int y = board.tilemap.cellBounds.yMin; y < board.tilemap.cellBounds.yMax; y++) {
+            Vector3Int position = new Vector3Int(x, y, 0);
+            TileBase tile = board.tilemap.GetTile(position);
+            if (tile != null) {
+                Debug.Log("Tile at position " + position.ToString());
+            }
+        }
+    }
+}
 
     void checkForRings(){
         //check for layer 1 ring: if so, check for layer 2 ring, etc, 

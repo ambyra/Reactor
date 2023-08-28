@@ -10,6 +10,9 @@ public class Board : MonoBehaviour{
     public ShapeData[] shapes;
     public Vector2Int boardSize = new Vector2Int(100, 100);
 
+    public List<Tile> reactorTiles = new List<Tile>();
+    public List<Tile> playerTiles = new List<Tile>();
+
     private void Awake(){
         game = GameObject.Find("Game").GetComponent<Game>();
         tilemap = game.tilemap;

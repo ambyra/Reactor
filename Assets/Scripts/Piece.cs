@@ -6,12 +6,12 @@ public class Piece : MonoBehaviour{
     public Vector3Int position;
     public Vector2Int direction;
     public int rotationIndex;
-    public bool isLocked {get; private set;}
+    public bool isLocked;
 
     public Game game;
     public Board board;
 
-    private float stepTime;
+    float stepTime;
     private float moveTime;
     private float lockTime;
 
@@ -24,17 +24,18 @@ public class Piece : MonoBehaviour{
     }
 
     void Update(){
+        if (isLocked) return;  //<-- fix this
         board.Clear(this);
         
         lockTime += Time.deltaTime;
         if (Time.time > stepTime) step();
+        if(Time.time > moveTime && !isLocked) handleMovement();
 
-        bool isMoveable = Time.time > moveTime && !isLocked;
-        if(isMoveable) handleMovement();
+        if (isLocked) return; //<-- fix this
         board.Set(this);
     }
 
-    private void handleMovement(){
+    void handleMovement(){
         if(Input.GetKeyDown(KeyCode.S))Move(Vector2Int.left);
         if(Input.GetKeyDown(KeyCode.F) )Move(Vector2Int.right);
 
@@ -44,12 +45,7 @@ public class Piece : MonoBehaviour{
         }
         if(Input.GetKeyDown(KeyCode.J)) Rotate(-1);
         if(Input.GetKeyDown(KeyCode.K)) Rotate(1);
-        
-
     }
-    
-
-
 
     public void Initialize(Shape shape, Vector3Int position, Vector2Int direction){
         isLocked = false;
@@ -67,26 +63,43 @@ public class Piece : MonoBehaviour{
         }
     }
 
-    private void step(){
+    void step(){
         stepTime = Time.time + game.settings.stepDelay;
         Move(direction);
         if (lockTime >= game.settings.lockDelay) Lock();
     }
 
-    public void Lock(){
-        board.Set(this);
+    void Lock(){
+        print("lock");
         isLocked = true;
-        //board.ClearLines();
+        setColors();
+        //todo: clear ring here
     }
 
-    private void translateTiles(Vector2Int translation){
+    void setColors(){
+        for (int i = 0; i < cells.Length; i++){
+            Vector3Int cell = cells[i];
+            Vector3Int position = cell + this.position;
+            int largest = getLargestPositionElement(position);
+            board.tilemap.SetTile(position, board.reactorTiles[largest]);
+        }
+    }
+
+    int getLargestPositionElement(Vector3Int position) {
+        //todo: fix this, topleft is -1, 0, bottomright is 0,-1
+        int x = Mathf.Abs(position.x);
+        int y = Mathf.Abs(position.y);
+        return Mathf.Max(x, y);
+    }
+
+    void translateTiles(Vector2Int translation){
         Vector3Int newPosition = position;
         newPosition.x += translation.x;
         newPosition.y += translation.y;
         position = newPosition;
     }
 
-    private bool Move(Vector2Int translation){
+    bool Move(Vector2Int translation){
 
         Vector3Int originalPosition = position;
         translateTiles(translation);
@@ -101,7 +114,7 @@ public class Piece : MonoBehaviour{
         return isValid;
     }
 
-    private void rotateTiles(int direction){
+    void rotateTiles(int direction){
         float[] matrix = Data.RotationMatrix;
         for (int i = 0; i < cells.Length; i++){
             Vector3 cell = cells[i];
@@ -123,7 +136,7 @@ public class Piece : MonoBehaviour{
         }
     }
 
-    private void Rotate(int direction){
+    void Rotate(int direction){
         int originalRotation = rotationIndex;
         rotationIndex = wrap(rotationIndex + direction, 0, 4);
         rotateTiles(direction);
@@ -136,14 +149,14 @@ public class Piece : MonoBehaviour{
 
     }
 
-    private bool tryMove(Vector2Int translation){
+    bool tryMove(Vector2Int translation){
         Vector3Int newPosition = position;
         newPosition.x += translation.x;
         newPosition.y += translation.y;
         return board.IsValidPosition(this, newPosition);
     }
 
-    private bool tryWallKick(int rotationDirection){
+    bool tryWallKick(int rotationDirection){
         int wallKickIndex = getWallKickIndex(rotationIndex, rotationDirection);
         for (int i = 0; i < data.wallKicks.GetLength(1); i++){
             Vector2Int translation = data.wallKicks[wallKickIndex, i];
@@ -155,13 +168,13 @@ public class Piece : MonoBehaviour{
         return false;
     }
 
-    private int getWallKickIndex(int rotationIndex, int rotationDirection){
+    int getWallKickIndex(int rotationIndex, int rotationDirection){
         int wallKickIndex = rotationIndex * 2;
         if (rotationDirection < 0) wallKickIndex--;
         return wrap(wallKickIndex, 0, data.wallKicks.GetLength(0));
     }
 
-    private int wrap(int input, int min, int max){
+    int wrap(int input, int min, int max){
         if (input < min) return max - (min - input) % (max - min);
         return min + (input - min) % (max - min);
     }

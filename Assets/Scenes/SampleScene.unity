@@ -309,7 +309,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 15
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -538,31 +538,46 @@ MonoBehaviour:
   tilemap: {fileID: 1607523542}
   game: {fileID: 0}
   shapes:
-  - tile: {fileID: 11400000, guid: 7864c6e5ce640448abbcc89116320095, type: 2}
+  - tile: {fileID: 11400000, guid: 6065306b84daf47deaa635b8257b254f, type: 2}
     shape: 0
     cells: []
-  - tile: {fileID: 11400000, guid: 7864c6e5ce640448abbcc89116320095, type: 2}
+  - tile: {fileID: 11400000, guid: 6065306b84daf47deaa635b8257b254f, type: 2}
     shape: 1
     cells: []
-  - tile: {fileID: 11400000, guid: 7864c6e5ce640448abbcc89116320095, type: 2}
+  - tile: {fileID: 11400000, guid: 6065306b84daf47deaa635b8257b254f, type: 2}
     shape: 2
     cells: []
-  - tile: {fileID: 11400000, guid: 7864c6e5ce640448abbcc89116320095, type: 2}
+  - tile: {fileID: 11400000, guid: 6065306b84daf47deaa635b8257b254f, type: 2}
     shape: 3
     cells: []
-  - tile: {fileID: 11400000, guid: 7864c6e5ce640448abbcc89116320095, type: 2}
+  - tile: {fileID: 11400000, guid: 6065306b84daf47deaa635b8257b254f, type: 2}
     shape: 4
     cells: []
-  - tile: {fileID: 11400000, guid: 7864c6e5ce640448abbcc89116320095, type: 2}
+  - tile: {fileID: 11400000, guid: 6065306b84daf47deaa635b8257b254f, type: 2}
     shape: 5
     cells: []
-  - tile: {fileID: 11400000, guid: 7864c6e5ce640448abbcc89116320095, type: 2}
+  - tile: {fileID: 11400000, guid: 6065306b84daf47deaa635b8257b254f, type: 2}
     shape: 6
     cells: []
-  - tile: {fileID: 11400000, guid: e99fbc83520ae4f4083d9827c7de43cc, type: 2}
+  - tile: {fileID: 11400000, guid: 77622ba106fd84514891d7fd479a1dc7, type: 2}
     shape: 3
     cells: []
   boardSize: {x: 10, y: 20}
+  reactorTiles:
+  - {fileID: 11400000, guid: 77622ba106fd84514891d7fd479a1dc7, type: 2}
+  - {fileID: 11400000, guid: 341159b99685f48cbaf6dfd5078b5c32, type: 2}
+  - {fileID: 11400000, guid: 8793d87f1f0e040fdb0f223e4a169c1a, type: 2}
+  - {fileID: 11400000, guid: 2743dac17f8b04215acbf16f1cce83fd, type: 2}
+  - {fileID: 11400000, guid: 3cac641a5f9574eb487607016527e5c9, type: 2}
+  - {fileID: 11400000, guid: a929ad01c797d4abeaedb14296cc8d99, type: 2}
+  - {fileID: 11400000, guid: fe655524032cc4512b99046b0e1cd0bf, type: 2}
+  - {fileID: 11400000, guid: f7811a8b969c745ed91dc94201f56308, type: 2}
+  - {fileID: 11400000, guid: f7bfd9bc3b00a4b99b1bdd606800450b, type: 2}
+  playerTiles:
+  - {fileID: 11400000, guid: 5184283dc8f064aeda5b1c12e2c2b19b, type: 2}
+  - {fileID: 11400000, guid: 6065306b84daf47deaa635b8257b254f, type: 2}
+  - {fileID: 11400000, guid: 20149c69d6105426aac4c583b8ea622f, type: 2}
+  - {fileID: 11400000, guid: b6c2927f9134b4b5aaad4d69dcdbbbcb, type: 2}
 --- !u!156049354 &2065725145
 Grid:
   m_ObjectHideFlags: 0

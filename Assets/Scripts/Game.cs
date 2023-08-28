@@ -37,7 +37,12 @@ public class Game : MonoBehaviour{
     }
 
     void Update(){
-        if (Input.GetKeyDown(KeyCode.N))board.RotateWithAnimation(player1.NewPiece);
+        //if (Input.GetKeyDown(KeyCode.N))board.RotateWithAnimation(player1.NewPiece);
+        if (Input.GetKeyDown(KeyCode.N)){
+            player1.activePiece.isLocked = true;
+            board.Rotate();
+            player1.NewPiece();
+        }
     }
     
     Player AddPlayer(string position){
