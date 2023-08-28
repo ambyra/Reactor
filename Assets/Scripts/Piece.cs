@@ -1,7 +1,6 @@
 using UnityEngine;
 
-public class Piece : MonoBehaviour
-{
+public class Piece : MonoBehaviour{
     public ShapeData data;
     public Vector3Int[] cells;
     public Vector3Int position;
@@ -12,12 +11,6 @@ public class Piece : MonoBehaviour
     public Game game;
     public Board board;
 
-    public bool MoveLeft;
-    public bool MoveRight;
-    public bool MoveDown;
-    public bool RotateLeft;
-    public bool RotateRight;
-    
     private float stepTime;
     private float moveTime;
     private float lockTime;
@@ -37,26 +30,26 @@ public class Piece : MonoBehaviour
         if (Time.time > stepTime) step();
 
         bool isMoveable = Time.time > moveTime && !isLocked;
-        if(isMoveable){
-            if(MoveLeft)Move(Vector2Int.left);
-            if(MoveRight)Move(Vector2Int.right);
-            if(MoveDown){
-                stepTime = Time.time + game.settings.stepDelay;
-                Move(Vector2Int.down);
-            }
-
-            if(RotateLeft)Rotate(-1);
-            if(RotateRight)Rotate(1);
-        }
-        
-        MoveLeft = false;
-        MoveRight = false;
-        MoveDown = false;
-        RotateLeft = false;
-        RotateRight = false;
-        
+        if(isMoveable) handleMovement();
         board.Set(this);
     }
+
+    private void handleMovement(){
+        if(Input.GetKeyDown(KeyCode.S))Move(Vector2Int.left);
+        if(Input.GetKeyDown(KeyCode.F) )Move(Vector2Int.right);
+
+        if(Input.GetKeyDown(KeyCode.D)){
+            stepTime = Time.time + game.settings.stepDelay;
+            Move(Vector2Int.down);
+        }
+        if(Input.GetKeyDown(KeyCode.J)) Rotate(-1);
+        if(Input.GetKeyDown(KeyCode.K)) Rotate(1);
+        
+
+    }
+    
+
+
 
     public void Initialize(Shape shape, Vector3Int position, Vector2Int direction){
         isLocked = false;

@@ -166,7 +166,7 @@ Transform:
   m_Children:
   - {fileID: 1607523540}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &446489905
 GameObject:
@@ -370,7 +370,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1461344174
 MonoBehaviour:
@@ -535,32 +535,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bc4c39266ac34d689eb2e3ed6f8c35b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilemap: {fileID: 0}
+  tilemap: {fileID: 1607523542}
   game: {fileID: 0}
   shapes:
   - tile: {fileID: 11400000, guid: 7864c6e5ce640448abbcc89116320095, type: 2}
     shape: 0
     cells: []
-  - tile: {fileID: 11400000, guid: e99fbc83520ae4f4083d9827c7de43cc, type: 2}
+  - tile: {fileID: 11400000, guid: 7864c6e5ce640448abbcc89116320095, type: 2}
     shape: 1
     cells: []
-  - tile: {fileID: 11400000, guid: f33d21d4ba7ca4c868df2235a5fee9ed, type: 2}
+  - tile: {fileID: 11400000, guid: 7864c6e5ce640448abbcc89116320095, type: 2}
     shape: 2
     cells: []
-  - tile: {fileID: 11400000, guid: 2de0d1f5e0d894b3b88741baed7afce8, type: 2}
+  - tile: {fileID: 11400000, guid: 7864c6e5ce640448abbcc89116320095, type: 2}
     shape: 3
     cells: []
-  - tile: {fileID: 11400000, guid: 7e88c5419513a4059961c8d2784b9001, type: 2}
+  - tile: {fileID: 11400000, guid: 7864c6e5ce640448abbcc89116320095, type: 2}
     shape: 4
     cells: []
-  - tile: {fileID: 11400000, guid: f413c1d9b31ed41c599d2b29d68d8f10, type: 2}
+  - tile: {fileID: 11400000, guid: 7864c6e5ce640448abbcc89116320095, type: 2}
     shape: 5
     cells: []
-  - tile: {fileID: 11400000, guid: 5d9bc1b091347403d9562ea038f11662, type: 2}
+  - tile: {fileID: 11400000, guid: 7864c6e5ce640448abbcc89116320095, type: 2}
     shape: 6
     cells: []
-  - tile: {fileID: 11400000, guid: 49a4b7cd10c67407795daefe9c0a1752, type: 2}
-    shape: 7
+  - tile: {fileID: 11400000, guid: e99fbc83520ae4f4083d9827c7de43cc, type: 2}
+    shape: 3
     cells: []
   boardSize: {x: 10, y: 20}
 --- !u!156049354 &2065725145
@@ -588,5 +588,5 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

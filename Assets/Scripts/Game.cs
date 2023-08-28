@@ -14,24 +14,13 @@ public class Game : MonoBehaviour{
     public Core core;
     public Player player1;
 
-    //idea: if piece collides with other piece, 
-    //      pieces merge, both players control, 
-    //      can clear more than 4 layers at once
-
     //todo:
-    // - add players
-    // - grid over stars background
-
-    //sequence: 
-    // - count players
     // - foreach player drop piece:
     //      - each player gets own piece color
-    //      - if piece collides with other piece, clear both
-    //      - if piece collides with core, lock it, turn white
-    //      - if piece collides with wall, lock it, turn black
     // - when no pieces left, rotate board
+    //match colors to reactor layers
 
-    //todo: wall kicks for sides
+    //todo: wall kicks for l/r players
     //todo: timer for all objects
 
     void Awake(){
@@ -48,23 +37,7 @@ public class Game : MonoBehaviour{
     }
 
     void Update(){
-        //todo: rotate auto after 3 beats
-        //      - clear unset tiles
-        //      - rotate board
-
-        if (Input.GetKeyDown(KeyCode.N)){
-            board.RotateWithAnimation(player1.NewPiece);
-            // board.Rotate();
-            // player1.NewPiece();
-
-        }
-
-        if (Input.GetKeyDown(KeyCode.K)){player1.activePiece.RotateRight = true;}
-        if (Input.GetKeyDown(KeyCode.J)){player1.activePiece.RotateLeft = true;}
-
-        if (Input.GetKeyDown(KeyCode.S)){player1.activePiece.MoveLeft = true;}
-        if (Input.GetKeyDown(KeyCode.F)){player1.activePiece.MoveRight = true;}
-        if (Input.GetKeyDown(KeyCode.D)){player1.activePiece.MoveDown = true;}
+        if (Input.GetKeyDown(KeyCode.N))board.RotateWithAnimation(player1.NewPiece);
     }
     
     Player AddPlayer(string position){
