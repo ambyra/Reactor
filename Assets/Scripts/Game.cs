@@ -14,6 +14,9 @@ public class Game : MonoBehaviour{
     public Core core;
     public Player player1;
 
+    //todo: red bars going up and down for reactor temperature
+    //avoid meltdown
+
     //todo: create separate tilemap for core (?)
     //todo:
     // - foreach player drop piece:

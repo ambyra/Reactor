@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-public class Core : MonoBehaviour{
-    //todo: - function to check for core rings
 
+public class Core : MonoBehaviour{
     public Board board;
 
     void Awake(){
@@ -35,10 +34,6 @@ public class Core : MonoBehaviour{
                 }
             }
         }
-
-        // board.tilemap.SetTile(new Vector3Int(-1,0,0), board.reactorTiles[7]);
-        // board.tilemap.SetTile(new Vector3Int(0,-1,0), board.reactorTiles[7]);
-
     }
 
     void PrintTileLocations() {
@@ -120,62 +115,23 @@ public class Core : MonoBehaviour{
     }
 
     void shiftBlocks(int layer){
+        //algo:
+        //start from lowest ring
+        //check if ring is full
+        //if ring is full, clear it
+        //shift all rings above down
+        //repeat until no rings are full
+
         //if ring found on layer 5:
         //  clear layer 5
         // shift layer 6 down, layer 7 down , layer 8 down, etc
+
+        // Only advance to the next row if the current is not cleared
+        //         // because the tiles above will fall down when a row is cleared
+        //         if (IsLineFull(row)) {
+        //             LineClear(row);
+        //         } else {
+        //             row++;
+        //         }
     }
-
-    // public void ClearLines(){
-    //     print("Clearing lines");
-    //     RectInt bounds = Bounds;
-    //     int row = bounds.yMin;
-
-    //     // Clear from bottom to top
-    //     while (row < bounds.yMax)
-    //     {
-    //         // Only advance to the next row if the current is not cleared
-    //         // because the tiles above will fall down when a row is cleared
-    //         if (IsLineFull(row)) {
-    //             LineClear(row);
-    //         } else {
-    //             row++;
-    //         }
-    //     }
-    // }
-
-    // public bool IsLineFull(int row)
-    // {
-    //     RectInt bounds = Bounds;
-    //     for (int col = bounds.xMin; col < bounds.xMax; col++){
-    //         Vector3Int position = new Vector3Int(col, row, 0);
-    //         // The line is not full if a tile is missing
-    //         if (!tilemap.HasTile(position)) {
-    //             return false;
-    //         }
-    //     }
-    //     return true;
-    // }
-
-    // public void LineClear(int row){
-    //     print ("Clearing line " + row);
-    //     RectInt bounds = Bounds;
-
-    //     // Clear all tiles in the row
-    //     for (int col = bounds.xMin; col < bounds.xMax; col++){
-    //         Vector3Int position = new Vector3Int(col, row, 0);
-    //         tilemap.SetTile(position, null);
-    //     }
-
-    //     // Shift every row above down one
-    //     while (row < bounds.yMax){
-    //         for (int col = bounds.xMin; col < bounds.xMax; col++){
-    //             Vector3Int position = new Vector3Int(col, row + 1, 0);
-    //             TileBase above = tilemap.GetTile(position);
-
-    //             position = new Vector3Int(col, row, 0);
-    //             tilemap.SetTile(position, above);
-    //         }
-    //         row++;
-    //     }
-    // }
 }
