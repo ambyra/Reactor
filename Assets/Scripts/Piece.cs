@@ -10,6 +10,7 @@ public class Piece : MonoBehaviour{
 
     public Game game;
     public Board board;
+    public Core core;
 
     float stepTime;
     private float moveTime;
@@ -18,21 +19,30 @@ public class Piece : MonoBehaviour{
     void Awake(){
         game = GameObject.Find("Game").GetComponent<Game>();
         board = GameObject.Find("Board").GetComponent<Board>();
+        core = GameObject.Find("Core").GetComponent<Core>();
+
         rotationIndex = 0;
         isLocked = false;
         direction = Vector2Int.zero;
     }
 
     void Update(){
-        if (isLocked) return;  //<-- fix this
+        if (isLocked) return;
+
         board.Clear(this);
         
         lockTime += Time.deltaTime;
         if (Time.time > stepTime) step();
-        if(Time.time > moveTime && !isLocked) handleMovement();
+        if(Time.time > moveTime) handleMovement();
 
-        if (isLocked) return; //<-- fix this
         board.Set(this);
+        if (isLocked) core.SetColors();
+    }
+
+    void step(){
+        stepTime = Time.time + game.settings.stepDelay;
+        Move(direction);
+        if (lockTime >= game.settings.lockDelay) Lock();
     }
 
     void handleMovement(){
@@ -63,33 +73,13 @@ public class Piece : MonoBehaviour{
         }
     }
 
-    void step(){
-        stepTime = Time.time + game.settings.stepDelay;
-        Move(direction);
-        if (lockTime >= game.settings.lockDelay) Lock();
-    }
+
 
     void Lock(){
-        print("lock");
+        core.SetColors();
         isLocked = true;
-        setColors();
+        
         //todo: clear ring here
-    }
-
-    void setColors(){
-        for (int i = 0; i < cells.Length; i++){
-            Vector3Int cell = cells[i];
-            Vector3Int position = cell + this.position;
-            int largest = getLargestPositionElement(position);
-            board.tilemap.SetTile(position, board.reactorTiles[largest]);
-        }
-    }
-
-    int getLargestPositionElement(Vector3Int position) {
-        //todo: fix this, topleft is -1, 0, bottomright is 0,-1
-        int x = Mathf.Abs(position.x);
-        int y = Mathf.Abs(position.y);
-        return Mathf.Max(x, y);
     }
 
     void translateTiles(Vector2Int translation){
