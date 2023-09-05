@@ -80,9 +80,6 @@ public class Board : MonoBehaviour{
         int d = direction;
         int size = 10;
         int s = size;
-        //List<Vector3Int> newPos = new List<Vector3Int>();
-        //List<TileBase> tiles = new List<TileBase>();
-
 
         for (int x = -s; x<s; x++){
             for (int y = -s; y<s; y++){
@@ -91,19 +88,10 @@ public class Board : MonoBehaviour{
                     TileBase tile = tilemap.GetTile(tilePosition);
                     Vector3Int newPosition = new Vector3Int(y, -x - 1, 0);
                     tiles.Add(new TileData{position = newPosition, tile = tile});
-                    //Tile tileData = tile as Tile;
-                    // tiles.Add(tile);
-                    // newPos.Add(new Vector3Int(y, -x - 1, 0));
             }
         }}
 
         tilemap.ClearAllTiles();
-
-        // for (int i = 0; i < newPos.Count; i++){
-        //     //todo: replace w original tyle type
-        //     tilemap.SetTile(newPos[i], shapes[(int)Shape.O].tile);
-        // }
-
         for (int i = 0; i < tiles.Count; i++){
             tilemap.SetTile(tiles[i].position, tiles[i].tile);
         }

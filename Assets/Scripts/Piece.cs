@@ -73,8 +73,6 @@ public class Piece : MonoBehaviour{
         }
     }
 
-
-
     void Lock(){
         core.SetColors();
         isLocked = true;
@@ -168,5 +166,4 @@ public class Piece : MonoBehaviour{
         if (input < min) return max - (min - input) % (max - min);
         return min + (input - min) % (max - min);
     }
-
 }
