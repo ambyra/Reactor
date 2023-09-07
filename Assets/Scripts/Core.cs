@@ -6,6 +6,17 @@ using UnityEngine.Tilemaps;
 //todo: check ring layers to layer 20
 //todo: 2x core?
 
+//todo: steps:
+// - lock players
+
+// - get outer ring
+// - collapse outer ring
+// -repeat till no outer ring
+
+// - rotate board
+// - unlock players
+
+
 public class Core : MonoBehaviour{
     public Board board;
 
@@ -13,7 +24,8 @@ public class Core : MonoBehaviour{
         board = GameObject.Find("Board").GetComponent<Board>();
     }
     
-    void Start(){
+    public void Start(){
+        board.Clear();
         //O functions as core
         board.Set(Shape.O, new Vector3Int(-1,-1,0));
         SetColors();

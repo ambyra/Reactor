@@ -29,6 +29,11 @@ public class Game : MonoBehaviour{
     //todo: kill piece as soon as it locks, block input etc. 
     //todo: rotate board when all players pieces are locked
 
+    //todo: merge cymk colors when atoms cross?
+    // - or, just delete both pieces
+
+    //todo: kill piece after 15? steps
+
     void Awake(){
         board = GameObject.Find("Board").GetComponent<Board>();
         tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
@@ -39,33 +44,21 @@ public class Game : MonoBehaviour{
     }
 
     void Update(){
-        if (Input.GetKeyDown(KeyCode.N)){
-            player1.activePiece.isLocked = true;
-            player1.NewPiece();
-        }
+        if (Input.GetKeyDown(KeyCode.N)) player1.NewPiece();
+        if (Input.GetKeyDown(KeyCode.O)) player1.NewPiece(Shape.O);
+        if (Input.GetKeyDown(KeyCode.I)) player1.NewPiece(Shape.I);
+        if (Input.GetKeyDown(KeyCode.T)) player1.NewPiece(Shape.T);
 
-        if (Input.GetKeyDown(KeyCode.O)){
-            player1.activePiece.isLocked = true;
-            player1.NewPiece(Shape.O);
-        }
+        if (Input.GetKeyDown(KeyCode.C)) core.CheckBoard();
+        if (Input.GetKeyDown(KeyCode.X)){
+            board.Clear();
+            core.Start();
+        } 
 
-        if (Input.GetKeyDown(KeyCode.I)){
-            player1.activePiece.isLocked = true;
-            player1.NewPiece(Shape.I);
-        }
-
-        if (Input.GetKeyDown(KeyCode.T)){
-            player1.activePiece.isLocked = true;
-            player1.NewPiece(Shape.T);
-        }
-
-        if(Input.GetKeyDown(KeyCode.R)){
+        if (Input.GetKeyDown(KeyCode.R) && player1.activePiece.isLocked){
             board.RotateWithAnimation();
         }
-
-        if (Input.GetKeyDown(KeyCode.C)){
-            core.CheckBoard();
-        }
+        
     }
     
     Player AddPlayer(string position){

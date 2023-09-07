@@ -13,12 +13,15 @@ public class Board : MonoBehaviour{
     public List<Tile> reactorTiles = new List<Tile>();
     public List<Tile> playerTiles = new List<Tile>();
 
+    private bool isRotateLocked;
+
     private void Awake(){
         game = GameObject.Find("Game").GetComponent<Game>();
         tilemap = game.tilemap;
         for(int i = 0; i < shapes.Length; i++){
             shapes[i].Initialize();
         }
+        isRotateLocked = false;
     }
 
     public RectInt Bounds{
@@ -29,6 +32,7 @@ public class Board : MonoBehaviour{
     }
 
     public void Set(Piece piece){
+        if (isRotateLocked) return;
         for (int i = 0; i < piece.cells.Length; i++){
             Vector3Int tilePosition = piece.cells[i] + piece.position;
             tilemap.SetTile(tilePosition, piece.data.tile);
@@ -36,6 +40,7 @@ public class Board : MonoBehaviour{
     }
 
     public void Set(Shape shape, Vector3Int position){
+        if (isRotateLocked) return;
         ShapeData data = shapes[(int)shape];
         for (int i = 0; i < data.cells.Length; i++){
             Vector3Int tilePosition = (Vector3Int)data.cells[i] + position;
@@ -43,8 +48,10 @@ public class Board : MonoBehaviour{
         }
     }
 
-    public void RotateWithAnimation(Action onComplete = null){
-        StartCoroutine(rotateTilemap(90f, 0.5f, onComplete));
+    public void RotateWithAnimation(){
+        if (isRotateLocked) return;
+        isRotateLocked = true;
+        StartCoroutine(rotateTilemap(90f, 0.5f));
     }
 
     private IEnumerator rotateTilemap(float angle = 90f, float duration = 0.5f , Action onComplete = null){
@@ -61,8 +68,7 @@ public class Board : MonoBehaviour{
 
         tilemap.transform.rotation = endRotation;
         Rotate();
-
-        if (onComplete != null) onComplete(); 
+        isRotateLocked = false;
     }
 
     public class TileData{
@@ -103,6 +109,8 @@ public class Board : MonoBehaviour{
             tilemap.SetTile(tilePosition, null);
         }
     }
+
+    public void Clear(){tilemap.ClearAllTiles();}
 
     public bool IsValidPosition(Piece piece, Vector3Int position){
         RectInt bounds = Bounds;

@@ -3,8 +3,10 @@ using UnityEngine;
 public class Piece : MonoBehaviour{
     public ShapeData data;
     public Vector3Int[] cells;
+
     public Vector3Int position;
     public Vector2Int direction;
+
     public int rotationIndex;
     public bool isLocked;
 
@@ -13,6 +15,7 @@ public class Piece : MonoBehaviour{
     public Core core;
 
     float stepTime;
+    public int stepCount;
     private float moveTime;
     private float lockTime;
 
@@ -21,44 +24,61 @@ public class Piece : MonoBehaviour{
         board = GameObject.Find("Board").GetComponent<Board>();
         core = GameObject.Find("Core").GetComponent<Core>();
 
-        rotationIndex = 0;
-        isLocked = false;
         direction = Vector2Int.zero;
+        rotationIndex = 0;
+        isLocked = true;
     }
 
     void Update(){
-        if (isLocked) return;
+        if(isLocked) return;
 
         board.Clear(this);
-        
+
         lockTime += Time.deltaTime;
         if (Time.time > stepTime) step();
-        if(Time.time > moveTime) handleMovement();
+        if(Time.time > moveTime) getInputForTranslate();
+        //todo: if(Time.time > rotateTime)
+        getInputForRotate();
 
         board.Set(this);
-        if (isLocked) core.SetColors();
+
+        //todo: move to core, event system
+        if(isLocked) core.SetColors();
     }
 
     void step(){
         stepTime = Time.time + game.settings.stepDelay;
-        Move(direction);
+        stepCount++;
+
+        if (stepCount > game.settings.maxSteps)
+        {
+            Lock();
+            board.Clear(this);
+            return;
+        }
+
+        translate(direction);
         if (lockTime >= game.settings.lockDelay) Lock();
     }
 
-    void handleMovement(){
-        if(Input.GetKeyDown(KeyCode.S))Move(Vector2Int.left);
-        if(Input.GetKeyDown(KeyCode.F) )Move(Vector2Int.right);
+    void getInputForTranslate(){
+        if(Input.GetKey(KeyCode.S)) translate(Vector2Int.left);
+        if(Input.GetKey(KeyCode.F)) translate(Vector2Int.right);
+        if(Input.GetKey(KeyCode.D)) step(); 
+    }
 
-        if(Input.GetKeyDown(KeyCode.D)){
-            stepTime = Time.time + game.settings.stepDelay;
-            Move(Vector2Int.down);
-        }
-        if(Input.GetKeyDown(KeyCode.J)) Rotate(-1);
-        if(Input.GetKeyDown(KeyCode.K)) Rotate(1);
+    void getInputForRotate(){
+        if(Input.GetKeyDown(KeyCode.J)) rotate(-1);
+        if(Input.GetKeyDown(KeyCode.K)) rotate(1);
     }
 
     public void Initialize(Shape shape, Vector3Int position, Vector2Int direction){
+        if (!isLocked) return; //only new shape if locked
+
+        rotationIndex = 0;
+        stepCount = 0;
         isLocked = false;
+        enabled = true;
         data = board.shapes[(int)shape];
         this.position = position;
         this.direction = direction;
@@ -74,10 +94,9 @@ public class Piece : MonoBehaviour{
     }
 
     void Lock(){
-        core.SetColors();
+        //todo: put in message system, for clearing ring
         isLocked = true;
-        
-        //todo: clear ring here
+        enabled = false;
     }
 
     void translateTiles(Vector2Int translation){
@@ -87,7 +106,7 @@ public class Piece : MonoBehaviour{
         position = newPosition;
     }
 
-    bool Move(Vector2Int translation){
+    bool translate(Vector2Int translation){
 
         Vector3Int originalPosition = position;
         translateTiles(translation);
@@ -124,7 +143,7 @@ public class Piece : MonoBehaviour{
         }
     }
 
-    void Rotate(int direction){
+    void rotate(int direction){
         int originalRotation = rotationIndex;
         rotationIndex = wrap(rotationIndex + direction, 0, 4);
         rotateTiles(direction);
@@ -149,7 +168,7 @@ public class Piece : MonoBehaviour{
         for (int i = 0; i < data.wallKicks.GetLength(1); i++){
             Vector2Int translation = data.wallKicks[wallKickIndex, i];
             if(tryMove(translation)){
-                Move(translation);
+                translate(translation);
                 return true;
             }
         }

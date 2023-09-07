@@ -3,15 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class Player : MonoBehaviour
-{
-    public KeyCode leftKey;
-    public KeyCode rightKey;
-    public KeyCode downKey;
-    public KeyCode rotateLeftKey;
-    public KeyCode rotateRightKey;
-    public KeyCode hardDropKey;
-
+public class Player : MonoBehaviour{
     public Piece activePiece;
     public Vector3Int SpawnPosition;
     public Vector2Int FallDirection;
