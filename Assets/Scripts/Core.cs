@@ -27,38 +27,27 @@ public class Core : MonoBehaviour{
     public void Start(){
         board.Clear();
         //O functions as core
-        board.Set(Shape.O, new Vector3Int(-1,-1,0));
-        SetColors();
+        board.Set(Shape.O, board.reactorTiles[0], new Vector3Int(-1,-1,0));
     }
 
-    Tile[,] colors = new Tile[20,20];
+    public Tile  GetTile(Vector3Int position){
+        int x = position.x;
+        int y = position.y;
+        if(x>-1)x++;
+        if(y>-1)y++;
+        int largest = Mathf.Abs(x) > Mathf.Abs(y) ? Mathf.Abs(x) : Mathf.Abs(y);
+        largest -= 1;
+        if (largest < 0) largest = 0;
+        if (largest > 7) largest = 7;
 
-    void setupColors(){
-        for(int x = 0; x < 20; x++){
-            for(int y = 0; y < 20; y++){
-                colors[x,y] = board.reactorTiles[0];
-            }
-        }
+        return(board.reactorTiles[largest]);
     }
 
-    //todo: make on per piece basis
-    public void SetColors(){
-        int size = 10;
-        for (int x = -size; x < size; x++){
-            for (int y = -size; y < size; y++){
-                int ty = y;
-                int tx = x;
-                if(x>-1)tx++;
-                if(y>-1)ty++;
-                int largest = Mathf.Abs(tx) > Mathf.Abs(ty) ? Mathf.Abs(tx) : Mathf.Abs(ty);
-                largest -= 1;
-                if (largest < 0) largest = 0;
-                if (largest > 7) largest = 7;
-                
+    void SetTiles(){
+        for(int x = -8; x < 9; x++){
+            for(int y = -8; y < 9; y++){
                 Vector3Int pos = new Vector3Int(x,y,0);
-                if(board.tilemap.HasTile(pos)){
-                    board.tilemap.SetTile(pos, board.reactorTiles[largest]);
-                }
+                if(board.tilemap.HasTile(pos)) board.tilemap.SetTile(pos, GetTile(pos));
             }
         }
     }
@@ -156,6 +145,8 @@ public class Core : MonoBehaviour{
         for(int i = smallestRing; i < 9; i++){
             ShiftRingLayer(i);
         }
+
+        SetTiles();
         return true;
     }
 }

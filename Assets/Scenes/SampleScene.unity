@@ -536,12 +536,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bc4c39266ac34d689eb2e3ed6f8c35b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotateEvent:
+  RotateCompleteEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 446489906}
         m_TargetAssemblyTypeName: Game, Assembly-CSharp
-        m_MethodName: OnPieceLockEvent
+        m_MethodName: OnBoardRotateComplete
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

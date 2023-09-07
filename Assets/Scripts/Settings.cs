@@ -6,6 +6,6 @@ public class Settings : MonoBehaviour{
     public float stepDelay = 0.1f;
     public float moveDelay = 0.2f;
     public float lockDelay = 0.2f;
-    public int maxSteps = 20;
+    public int maxSteps = 18;
 }
 

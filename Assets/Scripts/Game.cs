@@ -77,7 +77,6 @@ public class Game : MonoBehaviour{
 
     public void OnPieceLock(){
         print ("piece lock");
-        //core.SetColors();
         }
         
 }

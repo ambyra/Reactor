@@ -16,6 +16,7 @@ public class Piece : MonoBehaviour{
     public Game game;
     public Board board;
     public Core core;
+    public Settings settings;
 
     float stepTime;
     public int stepCount;
@@ -25,6 +26,7 @@ public class Piece : MonoBehaviour{
 
     void Awake(){
         game = GameObject.Find("Game").GetComponent<Game>();
+        settings = game.settings;
         board = GameObject.Find("Board").GetComponent<Board>();
         core = GameObject.Find("Core").GetComponent<Core>();
 
@@ -43,26 +45,23 @@ public class Piece : MonoBehaviour{
         lockTime += Time.deltaTime;
 
         if (Time.time > stepTime) step();
-        if(Time.time > moveTime) getInputForTranslate();
+        if (Time.time > moveTime) getInputForTranslate();
         getInputForRotate(); //todo: if(Time.time > rotateTime)
 
+        if(isLocked && stepCount > settings.maxSteps) return; //todo: fix hack
         board.Set(this);
-        if(isLocked) core.SetColors();
     }
 
     void step(){
-        stepTime = Time.time + game.settings.stepDelay;
-        stepCount++;
-
-        if (stepCount > game.settings.maxSteps)
-        {
+        
+        if (stepCount > settings.maxSteps) {
             Lock();
-            board.Clear(this);
             return;
         }
-
+        stepCount++;
+        stepTime = Time.time + settings.stepDelay;
         translate(direction);
-        if (lockTime >= game.settings.lockDelay) Lock();
+        if (lockTime >= settings.lockDelay) Lock();
     }
 
     void getInputForTranslate(){
@@ -87,8 +86,8 @@ public class Piece : MonoBehaviour{
         this.position = position;
         this.direction = direction;
 
-        stepTime = Time.time + game.settings.stepDelay;
-        moveTime = Time.time + game.settings.moveDelay;
+        stepTime = Time.time + settings.stepDelay;
+        moveTime = Time.time + settings.moveDelay;
         lockTime = 0f;
 
         cells = new Vector3Int[data.cells.Length];
@@ -117,10 +116,11 @@ public class Piece : MonoBehaviour{
         translateTiles(translation);
         bool isValid = board.IsValidPosition(this, position);
         if(isValid){
-            moveTime = Time.time + game.settings.moveDelay;
+            moveTime = Time.time + settings.moveDelay;
             lockTime = 0f; // reset
         }
         else{
+            stepCount--; //todo: fix hack
             position = originalPosition;
         }
         return isValid;
