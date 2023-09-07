@@ -3,8 +3,11 @@ using UnityEngine;
 using System;
 using System.Collections;
 using UnityEngine.Tilemaps;
+using UnityEngine.Events;
 
 public class Board : MonoBehaviour{
+    public UnityEvent RotateCompleteEvent;
+
     public Tilemap tilemap;
     public Game game;
     public ShapeData[] shapes;
@@ -69,6 +72,7 @@ public class Board : MonoBehaviour{
         tilemap.transform.rotation = endRotation;
         Rotate();
         isRotateLocked = false;
+        RotateCompleteEvent.Invoke();
     }
 
     public class TileData{
@@ -76,9 +80,7 @@ public class Board : MonoBehaviour{
         public TileBase tile;
     }
 
-    public void Rotate(){Rotate(1);}
-
-    public void Rotate(int direction){
+    public void Rotate(int direction = 1){
         tilemap.transform.rotation = Quaternion.Euler(0, 0, 0);
 
         List<TileData> tiles = new List<TileData>();

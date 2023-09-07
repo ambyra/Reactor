@@ -31,6 +31,17 @@ public class Core : MonoBehaviour{
         SetColors();
     }
 
+    Tile[,] colors = new Tile[20,20];
+
+    void setupColors(){
+        for(int x = 0; x < 20; x++){
+            for(int y = 0; y < 20; y++){
+                colors[x,y] = board.reactorTiles[0];
+            }
+        }
+    }
+
+    //todo: make on per piece basis
     public void SetColors(){
         int size = 10;
         for (int x = -size; x < size; x++){

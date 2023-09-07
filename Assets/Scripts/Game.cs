@@ -12,6 +12,7 @@ public class Game : MonoBehaviour{
     public Tilemap tilemap;
     public Settings settings;
     public Core core;
+
     public Player player1;
 
     //todo: create separate tilemap for core (?)
@@ -58,7 +59,6 @@ public class Game : MonoBehaviour{
         if (Input.GetKeyDown(KeyCode.R) && player1.activePiece.isLocked){
             board.RotateWithAnimation();
         }
-        
     }
     
     Player AddPlayer(string position){
@@ -70,4 +70,14 @@ public class Game : MonoBehaviour{
         Players.Add(player);
         return player;
     }
+
+    public void OnBoardRotateComplete(){
+        print ("board rotate complete");
+        }
+
+    public void OnPieceLock(){
+        print ("piece lock");
+        //core.SetColors();
+        }
+        
 }

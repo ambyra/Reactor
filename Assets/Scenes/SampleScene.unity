@@ -236,6 +236,7 @@ MonoBehaviour:
   stepDelay: 0.5
   moveDelay: 0.1
   lockDelay: 0.5
+  maxSteps: 20
 --- !u!114 &446489909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -535,6 +536,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bc4c39266ac34d689eb2e3ed6f8c35b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RotateEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 446489906}
+        m_TargetAssemblyTypeName: Game, Assembly-CSharp
+        m_MethodName: OnPieceLockEvent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   tilemap: {fileID: 1607523542}
   game: {fileID: 0}
   shapes:

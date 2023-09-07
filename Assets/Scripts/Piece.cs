@@ -1,6 +1,9 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Piece : MonoBehaviour{
+    public UnityEvent LockEvent;
+
     public ShapeData data;
     public Vector3Int[] cells;
 
@@ -16,6 +19,7 @@ public class Piece : MonoBehaviour{
 
     float stepTime;
     public int stepCount;
+
     private float moveTime;
     private float lockTime;
 
@@ -23,6 +27,8 @@ public class Piece : MonoBehaviour{
         game = GameObject.Find("Game").GetComponent<Game>();
         board = GameObject.Find("Board").GetComponent<Board>();
         core = GameObject.Find("Core").GetComponent<Core>();
+
+        LockEvent.AddListener(game.OnPieceLock);
 
         direction = Vector2Int.zero;
         rotationIndex = 0;
@@ -35,14 +41,12 @@ public class Piece : MonoBehaviour{
         board.Clear(this);
 
         lockTime += Time.deltaTime;
+
         if (Time.time > stepTime) step();
         if(Time.time > moveTime) getInputForTranslate();
-        //todo: if(Time.time > rotateTime)
-        getInputForRotate();
+        getInputForRotate(); //todo: if(Time.time > rotateTime)
 
         board.Set(this);
-
-        //todo: move to core, event system
         if(isLocked) core.SetColors();
     }
 
@@ -97,6 +101,7 @@ public class Piece : MonoBehaviour{
         //todo: put in message system, for clearing ring
         isLocked = true;
         enabled = false;
+        LockEvent.Invoke();
     }
 
     void translateTiles(Vector2Int translation){
