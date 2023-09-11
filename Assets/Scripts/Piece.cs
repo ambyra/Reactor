@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Tilemaps;
 
 public class Piece : MonoBehaviour{
     public UnityEvent LockEvent;
 
     public ShapeData data;
     public Vector3Int[] cells;
+    public Tile tile;
 
     public Vector3Int position;
     public Vector2Int direction;
@@ -75,8 +77,10 @@ public class Piece : MonoBehaviour{
         if(Input.GetKeyDown(KeyCode.K)) rotate(1);
     }
 
-    public void Initialize(Shape shape, Vector3Int position, Vector2Int direction){
+    public void Initialize(Shape shape, Tile tile, Vector3Int position, Vector2Int direction){
         if (!isLocked) return; //only new shape if locked
+
+        this.tile = tile;
 
         rotationIndex = 0;
         stepCount = 0;

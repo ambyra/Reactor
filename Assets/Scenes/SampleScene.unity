@@ -236,7 +236,7 @@ MonoBehaviour:
   stepDelay: 0.5
   moveDelay: 0.1
   lockDelay: 0.5
-  maxSteps: 20
+  maxSteps: 18
 --- !u!114 &446489909
 MonoBehaviour:
   m_ObjectHideFlags: 0

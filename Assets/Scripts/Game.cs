@@ -42,6 +42,7 @@ public class Game : MonoBehaviour{
         core = GameObject.Find("Core").GetComponent<Core>();
 
         player1 = AddPlayer("top");
+        player1.Initialize(board.playerTiles[1], Data.SpawnPositions["top"], Data.FallDirections["top"]);
     }
 
     void Update(){
