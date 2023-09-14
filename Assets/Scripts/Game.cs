@@ -10,6 +10,7 @@ public class Game : MonoBehaviour{
     public List<Player> Players = new();
     public Board board;
     public Tilemap tilemap;
+    public Tilemap fxTilemap;
     public Settings settings;
     public Core core;
 
@@ -37,13 +38,14 @@ public class Game : MonoBehaviour{
 
     void Awake(){
         board = GameObject.Find("Board").GetComponent<Board>();
-        tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
+        //tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>(); //set in editor
         settings = GameObject.Find("Game").GetComponent<Settings>();
         core = GameObject.Find("Core").GetComponent<Core>();
 
         player1 = AddPlayer("top");
         player1.Initialize(board.playerTiles[1], Data.SpawnPositions["top"], Data.FallDirections["top"]);
     }
+
 
     void Update(){
         if (Input.GetKeyDown(KeyCode.N)) player1.NewPiece();
@@ -59,6 +61,14 @@ public class Game : MonoBehaviour{
 
         if (Input.GetKeyDown(KeyCode.R) && player1.activePiece.isLocked){
             board.RotateWithAnimation();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1)){
+            core.MoveRingToFxLayer(1);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3)){
+            core.MoveRingToFxLayer(3);
         }
     }
     

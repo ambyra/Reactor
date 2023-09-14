@@ -21,10 +21,16 @@ public class Board : MonoBehaviour{
     private void Awake(){
         game = GameObject.Find("Game").GetComponent<Game>();
         tilemap = game.tilemap;
+
         for(int i = 0; i < shapes.Length; i++){
             shapes[i].Initialize();
         }
         isRotateLocked = false;
+    }
+
+    public class TileData{
+        public Vector3Int position;
+        public TileBase tile;
     }
 
     public RectInt Bounds{
@@ -94,10 +100,7 @@ public class Board : MonoBehaviour{
         RotateCompleteEvent.Invoke();
     }
 
-    public class TileData{
-        public Vector3Int position;
-        public TileBase tile;
-    }
+
 
     public void Rotate(int direction = 1){
         tilemap.transform.rotation = Quaternion.Euler(0, 0, 0);

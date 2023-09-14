@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,10 +19,16 @@ using UnityEngine.Tilemaps;
 
 
 public class Core : MonoBehaviour{
+    public Game game;
     public Board board;
+    public Tilemap tilemap;
+    public Tilemap fxTilemap;
 
     void Awake(){
-        board = GameObject.Find("Board").GetComponent<Board>();
+        game = GameObject.Find("Game").GetComponent<Game>();
+        board = game.board;
+        tilemap = game.tilemap;
+        fxTilemap = game.fxTilemap;
     }
     
     public void Start(){
@@ -91,6 +98,39 @@ public class Core : MonoBehaviour{
             if(!board.tilemap.HasTile(pos)) return false;
         }
         return true;
+    }
+
+    public void MoveRingToFxLayer(int ringNumber){
+
+        int r = ringNumber - 1;
+        Vector2Int a = new Vector2Int(-2 - r, 1 + r);
+        Vector2Int b = new Vector2Int(1 + r, 1 + r);
+        Vector2Int c = new Vector2Int(-2 - r, -2 - r);
+        Vector2Int d = new Vector2Int(1 + r, -2 - r);
+
+        for (int x = a.x; x <= b.x; x++) {
+            Vector3Int pos = new Vector3Int(x, a.y, 0);
+            fxTilemap.SetTile(pos, board.tilemap.GetTile<Tile>(pos));
+            tilemap.SetTile(pos, null);
+        }
+
+        for (int x = c.x; x <= d.x; x++) {
+            Vector3Int pos = new Vector3Int(x, c.y, 0);
+            fxTilemap.SetTile(pos, board.tilemap.GetTile<Tile>(pos));
+            tilemap.SetTile(pos, null);
+        }
+
+        for(int y = a.y - 1; y >= c.y + 1; y--) {
+            Vector3Int pos = new Vector3Int(a.x, y, 0);
+            fxTilemap.SetTile(pos, board.tilemap.GetTile<Tile>(pos));
+            tilemap.SetTile(pos, null);
+        }
+
+        for(int y = b.y - 1; y >= d.y + 1; y--) {
+            Vector3Int pos = new Vector3Int(b.x, y, 0);
+            fxTilemap.SetTile(pos, board.tilemap.GetTile<Tile>(pos));
+            tilemap.SetTile(pos, null);
+        }
     }
 
     public void ShiftRingLayer(int ringNumber){
