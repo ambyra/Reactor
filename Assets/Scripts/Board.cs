@@ -10,6 +10,8 @@ public class Board : MonoBehaviour{
 
     public Tilemap tilemap;
     public Game game;
+    public BeatController beat;
+
     public ShapeData[] shapes;
     public Vector2Int boardSize = new Vector2Int(100, 100);
 
@@ -21,6 +23,8 @@ public class Board : MonoBehaviour{
     private void Awake(){
         game = GameObject.Find("Game").GetComponent<Game>();
         tilemap = game.tilemap;
+        beat = game.beat;
+
 
         for(int i = 0; i < shapes.Length; i++){
             shapes[i].Initialize();
@@ -79,7 +83,7 @@ public class Board : MonoBehaviour{
     public void RotateWithAnimation(){
         if (isRotateLocked) return;
         isRotateLocked = true;
-        StartCoroutine(rotateTilemap(90f, 0.5f));
+        StartCoroutine(rotateTilemap(90f, beat.beatLength * 4.0f));
     }
 
     private IEnumerator rotateTilemap(float angle = 90f, float duration = 0.5f , Action onComplete = null){

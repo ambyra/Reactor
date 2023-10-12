@@ -19,57 +19,86 @@ public class Piece : MonoBehaviour{
     public Board board;
     public Core core;
     public Settings settings;
+    public BeatController beat;
 
-    float stepTime;
-    public int stepCount;
+    // float stepTime;
+    // public int stepCount;
 
-    private float moveTime;
-    private float lockTime;
+    // private float moveTime;
+    public float lockTime;
+
+    public bool canStep;
+    public bool canMove;
+    public bool canRotate;
+
+    public int beats;
 
     void Awake(){
         game = GameObject.Find("Game").GetComponent<Game>();
         settings = game.settings;
-        board = GameObject.Find("Board").GetComponent<Board>();
-        core = GameObject.Find("Core").GetComponent<Core>();
+        board = game.board;
+        core = game.core;
+        beat = game.beat;
 
         LockEvent.AddListener(game.OnPieceLock);
+
+        beat.BeatEvent.AddListener(NextBeat);
+        beat.StepEvent.AddListener(NextStep);
+
+        canStep = false;
+        canMove = false;
+        canRotate = true;
 
         direction = Vector2Int.zero;
         rotationIndex = 0;
         isLocked = true;
+
     }
 
     void Update(){
         if(isLocked) return;
-
+        lockTime += Time.deltaTime;
+        
         board.Clear(this);
 
-        lockTime += Time.deltaTime;
+        if(canStep) StepToBeat();
+        if(canMove) MoveToBeat();
+        if(canRotate) getInputForRotate(); //todo: if(Time.time > rotateTime)
 
-        if (Time.time > stepTime) step();
-        if (Time.time > moveTime) getInputForTranslate();
-        getInputForRotate(); //todo: if(Time.time > rotateTime)
-
-        if(isLocked && stepCount > settings.maxSteps) return; //todo: fix hack
         board.Set(this);
     }
 
-    void step(){
-        
-        if (stepCount > settings.maxSteps) {
+    public void NextBeat(){
+        canMove = true;
+        beats++;
+        if (beats > 15) {
             Lock();
-            return;
+            board.Clear(this);
         }
-        stepCount++;
-        stepTime = Time.time + settings.stepDelay;
-        translate(direction);
-        if (lockTime >= settings.lockDelay) Lock();
     }
 
-    void getInputForTranslate(){
-        if(Input.GetKey(KeyCode.S)) translate(Vector2Int.left);
-        if(Input.GetKey(KeyCode.F)) translate(Vector2Int.right);
-        if(Input.GetKey(KeyCode.D)) step(); 
+    public void NextStep(){
+        canStep = true;
+    }
+
+    public void MoveToBeat(){
+        if(Input.GetKey(KeyCode.S)){
+            canMove = false;
+            translate(Vector2Int.left);
+        }
+        if(Input.GetKey(KeyCode.F)){
+            canMove = false;
+            translate(Vector2Int.right);
+        }
+
+    }
+
+    public void StepToBeat(){
+        if(isLocked) return;
+
+        translate(direction);
+        if (lockTime >= settings.lockDelay) Lock();
+        canStep = false;
     }
 
     void getInputForRotate(){
@@ -83,16 +112,15 @@ public class Piece : MonoBehaviour{
         this.tile = tile;
 
         rotationIndex = 0;
-        stepCount = 0;
+        //stepCount = 0;
         isLocked = false;
         enabled = true;
         data = board.shapes[(int)shape];
         this.position = position;
         this.direction = direction;
 
-        stepTime = Time.time + settings.stepDelay;
-        moveTime = Time.time + settings.moveDelay;
         lockTime = 0f;
+        beats = 0;
 
         cells = new Vector3Int[data.cells.Length];
         for (int i = 0; i < cells.Length; i++) {
@@ -120,11 +148,11 @@ public class Piece : MonoBehaviour{
         translateTiles(translation);
         bool isValid = board.IsValidPosition(this, position);
         if(isValid){
-            moveTime = Time.time + settings.moveDelay;
+            //moveTime = Time.time + settings.moveDelay;
             lockTime = 0f; // reset
         }
         else{
-            stepCount--; //todo: fix hack
+            //stepCount--; //todo: fix hack
             position = originalPosition;
         }
         return isValid;

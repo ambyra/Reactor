@@ -13,6 +13,7 @@ public class Game : MonoBehaviour{
     public Tilemap fxTilemap;
     public Settings settings;
     public Core core;
+    public BeatController beat;
 
     public Player player1;
 
@@ -41,6 +42,8 @@ public class Game : MonoBehaviour{
         //tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>(); //set in editor
         settings = GameObject.Find("Game").GetComponent<Settings>();
         core = GameObject.Find("Core").GetComponent<Core>();
+        beat = GameObject.Find("Beat").GetComponent<BeatController>();
+
 
         player1 = AddPlayer("top");
         player1.Initialize(board.playerTiles[1], Data.SpawnPositions["top"], Data.FallDirections["top"]);

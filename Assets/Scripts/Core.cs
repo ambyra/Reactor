@@ -6,6 +6,7 @@ using UnityEngine.Tilemaps;
 
 //todo: check ring layers to layer 20
 //todo: 2x core?
+//todo: pulse core to music!!
 
 //todo: steps:
 // - lock players
