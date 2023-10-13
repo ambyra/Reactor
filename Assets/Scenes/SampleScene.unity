@@ -294,16 +294,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c097fbb7a43c84318ac6e2c40bc10487, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bpm: 110
   audioSource: {fileID: 271339654}
-  WholeNoteEvent:
+  bpm: 110
+  t: 0
+  beatLength: 0
+  beats: 0
+  BeatEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  StepEvent:
     m_PersistentCalls:
       m_Calls: []
-  t: 0
-  beats: 0
-  whole: 0
-  half: 0
-  beatLength: 0
 --- !u!4 &271339656
 Transform:
   m_ObjectHideFlags: 0
@@ -357,6 +370,7 @@ MonoBehaviour:
   fxTilemap: {fileID: 1826010793}
   settings: {fileID: 0}
   core: {fileID: 0}
+  beat: {fileID: 0}
   player1: {fileID: 0}
 --- !u!4 &446489907
 Transform:
@@ -950,6 +964,7 @@ MonoBehaviour:
         m_CallState: 2
   tilemap: {fileID: 1607523542}
   game: {fileID: 0}
+  beat: {fileID: 0}
   shapes:
   - tile: {fileID: 11400000, guid: 6065306b84daf47deaa635b8257b254f, type: 2}
     shape: 0
