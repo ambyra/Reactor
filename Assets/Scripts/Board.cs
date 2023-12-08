@@ -45,25 +45,20 @@ public class Board : MonoBehaviour{
     }
 
     public void Set(Piece piece){
-        if (isRotateLocked) return;
-
-        //color reactor colors
-        if(piece.isLocked){
-            for (int i = 0; i < piece.cells.Length; i++){
-                Vector3Int tilePosition = piece.cells[i] + piece.position;
-                tilemap.SetTile(tilePosition, game.core.GetTile(tilePosition));
-            }
-            return;
-        }
-        //color player colors
         for (int i = 0; i < piece.cells.Length; i++){
             Vector3Int tilePosition = piece.cells[i] + piece.position;
             tilemap.SetTile(tilePosition, piece.tile);
         }
     }
 
+    public void SetLocked(Piece piece){
+        for (int i = 0; i < piece.cells.Length; i++){
+            Vector3Int tilePosition = piece.cells[i] + piece.position;
+            tilemap.SetTile(tilePosition, game.core.GetTile(tilePosition));
+        }
+    }
+
     public void Set(Shape shape, Vector3Int position){
-        if (isRotateLocked) return;
         ShapeData data = shapes[(int)shape];
         for (int i = 0; i < data.cells.Length; i++){
             Vector3Int tilePosition = (Vector3Int)data.cells[i] + position;
@@ -72,7 +67,6 @@ public class Board : MonoBehaviour{
     }
 
     public void Set(Shape shape, Tile tile, Vector3Int position){
-        if (isRotateLocked) return;
         ShapeData data = shapes[(int)shape];
         for (int i = 0; i < data.cells.Length; i++){
             Vector3Int tilePosition = (Vector3Int)data.cells[i] + position;

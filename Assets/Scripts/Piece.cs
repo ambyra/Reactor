@@ -15,6 +15,9 @@ public class Piece : MonoBehaviour{
     public int beats;
     public int rotationIndex;
 
+    public float lockTime;
+    public float lockDelay = 1.0f;
+
     public bool isLocked;
     public bool isBeatEvent;
     public bool isMoveable;
@@ -41,7 +44,6 @@ public class Piece : MonoBehaviour{
     }
 
     public void Initialize(Shape shape, Tile tile, Vector3Int position, Vector2Int direction){
-        print("init");
         if (!isLocked) return; //only new shape if locked
         isLocked = false;
 
@@ -59,30 +61,33 @@ public class Piece : MonoBehaviour{
         }
     }
 
-    public void onBeatEvent(){isBeatEvent = true;}
+    public void onBeatEvent(){if (!isLocked) isBeatEvent = true;}
 
     public void Update(){
+        if (isLocked) return;
+        lockTime += Time.deltaTime;
+
         board.Clear(this);
-        
+
         if (isBeatEvent){
             isBeatEvent = false;
-            isMoveable = true;
+            beats++;
+            if (beats > 15*4){
+                Kill();
+                return;
+            }
+            Move();
             if(beats%4 == 0) Step();
-            Beat();
-            Rotate();
+            if(isLocked) return;
         }
-        if(isMoveable) Move();
+
+        if(isLocked) return;
+        Rotate();
         board.Set(this);
     }
 
-    void Beat(){
-        beats++;
-        if (beats > 15*8) {
-            Lock();
-        }
-    }
-
     void Move(){
+        //if(!isMoveable) return;
         if(Input.GetKey(KeyCode.S)){
             translate(Vector2Int.left);
             isMoveable = false;
@@ -94,8 +99,9 @@ public class Piece : MonoBehaviour{
     }
 
     void Step(){
-        translate(direction);
-
+        bool isValidStep = translate(direction);
+        if(isValidStep) lockTime = 0;
+        if(lockTime > lockDelay) Lock();
     }
 
     void Rotate(){
@@ -104,9 +110,15 @@ public class Piece : MonoBehaviour{
     }
 
     void Lock(){
-        print("lock");
         isLocked = true;
-        enabled = false;
+        board.Clear(this);
+        board.SetLocked(this);
+        LockEvent.Invoke();
+    }
+
+    void Kill(){
+        isLocked = true;
+        board.Clear(this);
         LockEvent.Invoke();
     }
 
