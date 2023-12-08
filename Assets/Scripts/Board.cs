@@ -84,6 +84,7 @@ public class Board : MonoBehaviour{
         if (isRotateLocked) return;
         isRotateLocked = true;
         StartCoroutine(rotateTilemap(90f, beat.beatLength * 4.0f));
+        rotateTilemap(90f, beat.beatLength * 4.0f);
     }
 
     private IEnumerator rotateTilemap(float angle = 90f, float duration = 0.5f , Action onComplete = null){
@@ -103,6 +104,24 @@ public class Board : MonoBehaviour{
         isRotateLocked = false;
         RotateCompleteEvent.Invoke();
     }
+
+    // public async void rotateTilemap(float angle = 90f, float duration = 0.5f , Action onComplete = null){
+    //     float elapsed = 0f; // Elapsed time since rotation started
+    //     Quaternion startRotation = tilemap.transform.rotation;
+    //     Quaternion endRotation = startRotation * Quaternion.Euler(0f, 0f, -90f);
+
+    //     while (elapsed < duration) {
+    //         elapsed += Time.deltaTime;
+    //         float t = Mathf.Clamp01(elapsed / duration);
+    //         tilemap.transform.rotation = Quaternion.Slerp(startRotation, endRotation, t);
+    //         await new WaitForEndOfFrame();
+    //     }
+
+    //     tilemap.transform.rotation = endRotation;
+    //     Rotate();
+    //     isRotateLocked = false;
+    //     RotateCompleteEvent.Invoke();
+    // }
 
 
 

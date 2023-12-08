@@ -12,26 +12,18 @@ public class Piece : MonoBehaviour{
     public Vector3Int position;
     public Vector2Int direction;
 
+    public int beats;
     public int rotationIndex;
+
     public bool isLocked;
+    public bool isBeatEvent;
+    public bool isMoveable;
 
     public Game game;
     public Board board;
     public Core core;
     public Settings settings;
     public BeatController beat;
-
-    // float stepTime;
-    // public int stepCount;
-
-    // private float moveTime;
-    public float lockTime;
-
-    public bool canStep;
-    public bool canMove;
-    public bool canRotate;
-
-    public int beats;
 
     void Awake(){
         game = GameObject.Find("Game").GetComponent<Game>();
@@ -41,95 +33,78 @@ public class Piece : MonoBehaviour{
         beat = game.beat;
 
         LockEvent.AddListener(game.OnPieceLock);
+        beat.BeatEvent.AddListener(onBeatEvent);
 
-        beat.BeatEvent.AddListener(NextBeat);
-        beat.StepEvent.AddListener(NextStep);
-
-        canStep = false;
-        canMove = false;
-        canRotate = true;
-
-        direction = Vector2Int.zero;
-        rotationIndex = 0;
         isLocked = true;
-
-    }
-
-    void Update(){
-        if(isLocked) return;
-        lockTime += Time.deltaTime;
-        
-        board.Clear(this);
-
-        if(canStep) StepToBeat();
-        if(canMove) MoveToBeat();
-        if(canRotate) getInputForRotate(); //todo: if(Time.time > rotateTime)
-
-        board.Set(this);
-    }
-
-    public void NextBeat(){
-        canMove = true;
-        beats++;
-        if (beats > 15) {
-            Lock();
-            board.Clear(this);
-        }
-    }
-
-    public void NextStep(){
-        canStep = true;
-    }
-
-    public void MoveToBeat(){
-        if(Input.GetKey(KeyCode.S)){
-            canMove = false;
-            translate(Vector2Int.left);
-        }
-        if(Input.GetKey(KeyCode.F)){
-            canMove = false;
-            translate(Vector2Int.right);
-        }
-
-    }
-
-    public void StepToBeat(){
-        if(isLocked) return;
-
-        translate(direction);
-        if (lockTime >= settings.lockDelay) Lock();
-        canStep = false;
-    }
-
-    void getInputForRotate(){
-        if(Input.GetKeyDown(KeyCode.J)) rotate(-1);
-        if(Input.GetKeyDown(KeyCode.K)) rotate(1);
+        isBeatEvent = false;
+        isMoveable = false;
     }
 
     public void Initialize(Shape shape, Tile tile, Vector3Int position, Vector2Int direction){
+        print("init");
         if (!isLocked) return; //only new shape if locked
+        isLocked = false;
 
         this.tile = tile;
-
-        rotationIndex = 0;
-        //stepCount = 0;
-        isLocked = false;
-        enabled = true;
-        data = board.shapes[(int)shape];
         this.position = position;
         this.direction = direction;
 
-        lockTime = 0f;
         beats = 0;
+        rotationIndex = 0;
 
+        data = board.shapes[(int)shape];    
         cells = new Vector3Int[data.cells.Length];
         for (int i = 0; i < cells.Length; i++) {
             cells[i] = (Vector3Int)data.cells[i];
         }
     }
 
+    public void onBeatEvent(){isBeatEvent = true;}
+
+    public void Update(){
+        board.Clear(this);
+        
+        if (isBeatEvent){
+            isBeatEvent = false;
+            isMoveable = true;
+            if(beats%4 == 0) Step();
+            Beat();
+            Rotate();
+        }
+        if(isMoveable) Move();
+        board.Set(this);
+    }
+
+    void Beat(){
+        beats++;
+        if (beats > 15*8) {
+            Lock();
+        }
+    }
+
+    void Move(){
+        if(Input.GetKey(KeyCode.S)){
+            translate(Vector2Int.left);
+            isMoveable = false;
+            }
+        if(Input.GetKey(KeyCode.F)){
+            translate(Vector2Int.right);
+            isMoveable = false;
+            }
+    }
+
+    void Step(){
+        translate(direction);
+
+    }
+
+    void Rotate(){
+        if(Input.GetKeyDown(KeyCode.J)) rotate(-1);
+        if(Input.GetKeyDown(KeyCode.K)) rotate(1);
+    }
+
     void Lock(){
-        //todo: put in message system, for clearing ring
+        print("lock");
         isLocked = true;
         enabled = false;
         LockEvent.Invoke();
@@ -143,19 +118,14 @@ public class Piece : MonoBehaviour{
     }
 
     bool translate(Vector2Int translation){
-
         Vector3Int originalPosition = position;
         translateTiles(translation);
         bool isValid = board.IsValidPosition(this, position);
-        if(isValid){
-            //moveTime = Time.time + settings.moveDelay;
-            lockTime = 0f; // reset
-        }
-        else{
-            //stepCount--; //todo: fix hack
+        if(!isValid){
             position = originalPosition;
+            return false;
         }
-        return isValid;
+        return true;
     }
 
     void rotateTiles(int direction){
