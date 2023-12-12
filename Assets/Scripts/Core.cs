@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+
 
 //todo: check ring layers to layer 20
 //todo: 2x core?
@@ -21,20 +23,23 @@ using UnityEngine.Tilemaps;
 
 public class Core : MonoBehaviour{
     public Game game;
+    public BeatController beat;
     public Board board;
     public Tilemap tilemap;
     public Tilemap fxTilemap;
 
-    void Awake(){
+    public void Start(){
         game = GameObject.Find("Game").GetComponent<Game>();
+        beat = game.beat;
         board = game.board;
         tilemap = game.tilemap;
         fxTilemap = game.fxTilemap;
-    }
-    
-    public void Start(){
         board.Clear();
         //O functions as core
+        board.Set(Shape.O, board.reactorTiles[0], new Vector3Int(-1,-1,0));
+    }
+
+    public void DrawCore(){
         board.Set(Shape.O, board.reactorTiles[0], new Vector3Int(-1,-1,0));
     }
 
@@ -51,7 +56,7 @@ public class Core : MonoBehaviour{
         return(board.reactorTiles[largest]);
     }
 
-    void SetTiles(){
+    void SetTileColors(){
         for(int x = -8; x < 9; x++){
             for(int y = -8; y < 9; y++){
                 Vector3Int pos = new Vector3Int(x,y,0);
@@ -180,14 +185,30 @@ public class Core : MonoBehaviour{
         }
     }
 
-    public bool CheckBoard(){
+    public bool CollapseSmallestRing(){
         int smallestRing = GetSmallestRing();
         if (smallestRing == 0) return false;
         for(int i = smallestRing; i < 9; i++){
             ShiftRingLayer(i);
         }
 
-        SetTiles();
+        SetTileColors();
         return true;
+    }
+
+    public async Task CollapseSmallestRingWithAnimation(){
+        int smallestRing = GetSmallestRing();
+        if (smallestRing == 0) return;
+        int delay = (int) (beat.beatLength * 2000);
+        MoveRingToFxLayer(0);
+        await Task.Delay(delay);
+        MoveRingToFxLayer(smallestRing);
+        await Task.Delay(delay);
+        fxTilemap.ClearAllTiles();
+        for(int i = smallestRing; i < 9; i++){
+            ShiftRingLayer(i);
+        }
+        DrawCore();
+        SetTileColors();
     }
 }

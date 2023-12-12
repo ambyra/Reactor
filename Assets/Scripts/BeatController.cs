@@ -10,7 +10,7 @@ public class BeatController : MonoBehaviour{
 
     public float t;
     public float beatLength;
-
+    
     public int beats = 1;
 
     public UnityEvent BeatEvent;

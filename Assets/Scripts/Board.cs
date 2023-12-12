@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using UnityEngine.Tilemaps;
 using UnityEngine.Events;
+using System.Threading.Tasks;
 
 public class Board : MonoBehaviour{
     public UnityEvent RotateCompleteEvent;
@@ -18,18 +19,14 @@ public class Board : MonoBehaviour{
     public List<Tile> reactorTiles = new List<Tile>();
     public List<Tile> playerTiles = new List<Tile>();
 
-    private bool isRotateLocked;
-
     private void Awake(){
         game = GameObject.Find("Game").GetComponent<Game>();
         tilemap = game.tilemap;
         beat = game.beat;
 
-
         for(int i = 0; i < shapes.Length; i++){
             shapes[i].Initialize();
         }
-        isRotateLocked = false;
     }
 
     public class TileData{
@@ -74,52 +71,22 @@ public class Board : MonoBehaviour{
         }
     }
 
-    public void RotateWithAnimation(){
-        if (isRotateLocked) return;
-        isRotateLocked = true;
-        StartCoroutine(rotateTilemap(90f, beat.beatLength * 4.0f));
-        rotateTilemap(90f, beat.beatLength * 4.0f);
-    }
-
-    private IEnumerator rotateTilemap(float angle = 90f, float duration = 0.5f , Action onComplete = null){
-        float elapsed = 0f; // Elapsed time since rotation started
+    public async Task RotateWithAnimation(){
+        var end = Time.time + beat.beatLength * 4.0f;
         Quaternion startRotation = tilemap.transform.rotation;
-        Quaternion endRotation = startRotation * Quaternion.Euler(0f, 0f, -90f);
-
-        while (elapsed < duration) {
-            elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsed / duration);
-            tilemap.transform.rotation = Quaternion.Slerp(startRotation, endRotation, t);
-            yield return null;
+        //rotate animation
+        while (Time.time < end){
+            tilemap.transform.Rotate(0, 0, -90f * Time.deltaTime / (beat.beatLength * 4.0f));
+            await Task.Yield();
         }
-
-        tilemap.transform.rotation = endRotation;
-        Rotate();
-        isRotateLocked = false;
-        RotateCompleteEvent.Invoke();
+        //reset rotation
+        tilemap.transform.rotation = startRotation;
+        //rotate board
+        RotateTilemap();
     }
 
-    // public async void rotateTilemap(float angle = 90f, float duration = 0.5f , Action onComplete = null){
-    //     float elapsed = 0f; // Elapsed time since rotation started
-    //     Quaternion startRotation = tilemap.transform.rotation;
-    //     Quaternion endRotation = startRotation * Quaternion.Euler(0f, 0f, -90f);
 
-    //     while (elapsed < duration) {
-    //         elapsed += Time.deltaTime;
-    //         float t = Mathf.Clamp01(elapsed / duration);
-    //         tilemap.transform.rotation = Quaternion.Slerp(startRotation, endRotation, t);
-    //         await new WaitForEndOfFrame();
-    //     }
-
-    //     tilemap.transform.rotation = endRotation;
-    //     Rotate();
-    //     isRotateLocked = false;
-    //     RotateCompleteEvent.Invoke();
-    // }
-
-
-
-    public void Rotate(int direction = 1){
+    public void RotateTilemap(int direction = 1){
         tilemap.transform.rotation = Quaternion.Euler(0, 0, 0);
 
         List<TileData> tiles = new List<TileData>();

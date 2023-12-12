@@ -3,7 +3,7 @@ using UnityEngine.Events;
 using UnityEngine.Tilemaps;
 
 public class Piece : MonoBehaviour{
-    public UnityEvent LockEvent;
+    public static UnityEvent LockEvent;
 
     public ShapeData data;
     public Vector3Int[] cells;
@@ -16,7 +16,7 @@ public class Piece : MonoBehaviour{
     public int rotationIndex;
 
     public float lockTime;
-    public float lockDelay = 1.0f;
+    public float lockDelay = 2.0f;
 
     public bool isLocked;
     public bool isBeatEvent;
@@ -35,7 +35,7 @@ public class Piece : MonoBehaviour{
         core = game.core;
         beat = game.beat;
 
-        LockEvent.AddListener(game.OnPieceLock);
+        LockEvent = new UnityEvent();
         beat.BeatEvent.AddListener(onBeatEvent);
 
         isLocked = true;
@@ -87,13 +87,16 @@ public class Piece : MonoBehaviour{
     }
 
     void Move(){
-        //if(!isMoveable) return;
         if(Input.GetKey(KeyCode.S)){
             translate(Vector2Int.left);
             isMoveable = false;
             }
         if(Input.GetKey(KeyCode.F)){
             translate(Vector2Int.right);
+            isMoveable = false;
+            }
+        if(Input.GetKey(KeyCode.D)){
+            translate(Vector2Int.down);
             isMoveable = false;
             }
     }
@@ -116,7 +119,7 @@ public class Piece : MonoBehaviour{
         LockEvent.Invoke();
     }
 
-    void Kill(){
+    public void Kill(){
         isLocked = true;
         board.Clear(this);
         LockEvent.Invoke();

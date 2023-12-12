@@ -22,6 +22,11 @@ public class Player : MonoBehaviour{
         FallDirection = fallDirection;
     }
 
+    public bool isPieceActive(){
+        if (activePiece.isLocked) return false;
+        return true;
+    }
+
     public void NewPiece(Shape shape){
         activePiece.Initialize(shape, PlayerTile, SpawnPosition, FallDirection);
     }
@@ -36,6 +41,10 @@ public class Player : MonoBehaviour{
 
         Shape shape = (Shape) shapeIndex;
         activePiece.Initialize(shape, PlayerTile, SpawnPosition, FallDirection);
+    }
+
+    public void ClearPiece(){
+        activePiece.Kill();
     }
 }
 
