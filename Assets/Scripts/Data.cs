@@ -8,17 +8,31 @@ public static class Data
     public static readonly float[] RotationMatrix = new float[] { cos, sin, -sin, cos };
 
     public static readonly Dictionary<string, Vector3Int> SpawnPositions = new Dictionary<string, Vector3Int>(){
-        { "top", new Vector3Int(-1, 8, 0) },
-        { "bottom", new Vector3Int(-1, -8, 0) },
-        { "left", new Vector3Int(-8, -1, 0) },
-        { "right", new Vector3Int(8, -1, 0) }
+        { "top", new Vector3Int(-1, 10, 0) },
+        { "bottom", new Vector3Int(-1, -12, 0) },
+        { "left", new Vector3Int(-10, -1, 0) },
+        { "right", new Vector3Int(10, -1, 0) }
     };
 
-    public static readonly Dictionary<string, Vector2Int> FallDirections = new Dictionary<string, Vector2Int>(){
+    public static readonly Dictionary<string, Vector2Int> DownDirection = new Dictionary<string, Vector2Int>(){
         { "top", new Vector2Int(0, -1) },
         { "bottom", new Vector2Int(0, 1) },
         { "left", new Vector2Int(1, 0) },
         { "right", new Vector2Int(-1, 0) }
+    };
+
+    public static readonly Dictionary<string, Vector2Int> LeftDirection = new Dictionary<string, Vector2Int>(){
+        { "top", new Vector2Int(-1, 0) },
+        { "bottom", new Vector2Int(1, 0) },
+        { "left", new Vector2Int(0, -1) },
+        { "right", new Vector2Int(0, 1) }
+    };
+
+    public static readonly Dictionary<string, Vector2Int> RightDirection = new Dictionary<string, Vector2Int>(){
+        { "top", new Vector2Int(1, 0) },
+        { "bottom", new Vector2Int(-1, 0) },
+        { "left", new Vector2Int(0, 1) },
+        { "right", new Vector2Int(0, -1) }
     };
 
     public static readonly Dictionary<Shape, Vector2Int[]> Cells = new Dictionary<Shape, Vector2Int[]>()

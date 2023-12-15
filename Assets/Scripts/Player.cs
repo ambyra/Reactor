@@ -6,29 +6,39 @@ using UnityEngine.Tilemaps;
 public class Player : MonoBehaviour{
     public Piece activePiece;
 
-    public Vector3Int SpawnPosition;
-    public Vector2Int FallDirection;
-    public Tile PlayerTile; //todo: each player gets own color
+    
+    public Tile playerTile; //player color
 
+    public enum PlayerPosition{Top, Bottom, Left, Right};
+    public PlayerPosition position;
+    public Vector3Int spawnPosition;
+    public MovementData movementData;
     public List<int> pieces = new();
 
-    void Awake(){
-        activePiece = GetComponent<Piece>();
-    }
-
-    public void Initialize(Tile playerTile, Vector3Int spawnPosition, Vector2Int fallDirection){
-        PlayerTile = playerTile;
-        SpawnPosition = spawnPosition;
-        FallDirection = fallDirection;
-    }
-
+    public bool isActive;
     public bool isPieceActive(){
         if (activePiece.isLocked) return false;
         return true;
     }
 
+    void Awake(){
+        activePiece = GetComponent<Piece>();
+        isActive = false;
+
+        spawnPosition = Data.SpawnPositions[position.ToString().ToLower()];
+        movementData = new MovementData();
+        movementData.Initialize(position.ToString().ToLower());
+    }
+
+    void moveLeft(){activePiece.Move(movementData.left);}
+
+    void moveRight(){activePiece.Move(movementData.right);}
+
+    void drop(){activePiece.Drop();}
+
+
     public void NewPiece(Shape shape){
-        activePiece.Initialize(shape, PlayerTile, SpawnPosition, FallDirection);
+        activePiece.Initialize(shape, playerTile, spawnPosition, movementData.down);
     }
 
     public void NewPiece(){
@@ -40,7 +50,7 @@ public class Player : MonoBehaviour{
         pieces.RemoveAt(index);
 
         Shape shape = (Shape) shapeIndex;
-        activePiece.Initialize(shape, PlayerTile, SpawnPosition, FallDirection);
+        activePiece.Initialize(shape, playerTile, spawnPosition, movementData.down);
     }
 
     public void ClearPiece(){

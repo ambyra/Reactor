@@ -10,7 +10,7 @@ public class Piece : MonoBehaviour{
     public Tile tile;
 
     public Vector3Int position;
-    public Vector2Int direction;
+    public Vector2Int fallDirection;
 
     public int beats;
     public int rotationIndex;
@@ -43,13 +43,13 @@ public class Piece : MonoBehaviour{
         isMoveable = false;
     }
 
-    public void Initialize(Shape shape, Tile tile, Vector3Int position, Vector2Int direction){
+    public void Initialize(Shape shape, Tile tile, Vector3Int position, Vector2Int fallDirection){
         if (!isLocked) return; //only new shape if locked
         isLocked = false;
 
         this.tile = tile;
         this.position = position;
-        this.direction = direction;
+        this.fallDirection = fallDirection;
 
         beats = 0;
         rotationIndex = 0;
@@ -76,7 +76,7 @@ public class Piece : MonoBehaviour{
                 Kill();
                 return;
             }
-            Move();
+            //Move();
             if(beats%4 == 0) Step();
             if(isLocked) return;
         }
@@ -86,23 +86,18 @@ public class Piece : MonoBehaviour{
         board.Set(this);
     }
 
-    void Move(){
-        if(Input.GetKey(KeyCode.S)){
-            translate(Vector2Int.left);
-            isMoveable = false;
-            }
-        if(Input.GetKey(KeyCode.F)){
-            translate(Vector2Int.right);
-            isMoveable = false;
-            }
-        if(Input.GetKey(KeyCode.D)){
-            translate(Vector2Int.down);
-            isMoveable = false;
-            }
+    public void Move(Vector2Int direction){
+        isMoveable = false;
+
+    }
+
+    public void Drop(){
+        translate(fallDirection);
+        isMoveable = false;
     }
 
     void Step(){
-        bool isValidStep = translate(direction);
+        bool isValidStep = translate(fallDirection);
         if(isValidStep) lockTime = 0;
         if(lockTime > lockDelay) Lock();
     }
@@ -133,6 +128,8 @@ public class Piece : MonoBehaviour{
     }
 
     bool translate(Vector2Int translation){
+        if(translation == Vector2Int.zero) return true;
+
         Vector3Int originalPosition = position;
         translateTiles(translation);
         bool isValid = board.IsValidPosition(this, position);
