@@ -17,6 +17,11 @@ public class Game : MonoBehaviour{
     public Core core;
     public BeatController beat;
 
+    public Player PlayerTop;
+    public Player PlayerBottom;
+    public Player PlayerLeft;
+    public Player PlayerRight;
+
     void Awake(){
         
         board = GameObject.Find("Board").GetComponent<Board>();
@@ -24,14 +29,24 @@ public class Game : MonoBehaviour{
         settings = GameObject.Find("Game").GetComponent<Settings>();
         core = GameObject.Find("Core").GetComponent<Core>();
         beat = GameObject.Find("Beat").GetComponent<BeatController>();
-
-        //CreatePlayers();
         tilemap.transform.rotation = Quaternion.Euler(0,0,0);
     }
 
     void Start(){
-        //Piece.LockEvent.AddListener(OnPieceLock);
-        // Players[1].isActive = true;
+        PlayerTop = GameObject.Find("PlayerTop").GetComponent<Player>();
+        // PlayerBottom = GameObject.Find("PlayerBottom").GetComponent<Player>();
+        // PlayerLeft = GameObject.Find("PlayerLeft").GetComponent<Player>();
+        // PlayerRight = GameObject.Find("PlayerRight").GetComponent<Player>();
+
+        Players.Add(PlayerTop);
+        // Players.Add(PlayerBottom);
+        // Players.Add(PlayerLeft);
+        // Players.Add(PlayerRight);
+
+        PlayerTop.isActive = true;
+
+
+        Piece.LockEvent.AddListener(OnPieceLock);
         PlayersNewPiece();
     }
 
@@ -68,26 +83,6 @@ public class Game : MonoBehaviour{
         }
         return false;
     }
-
-    // void CreatePlayers(){
-    //     foreach (string position in Data.SpawnPositions.Keys){
-    //         Player player = CreatePlayer(position);
-    //     }
-    //     for (int i = 0; i < Players.Count; i++){
-    //         Player player = Players[i];
-    //         player.Initialize(board.playerTiles[i], player.SpawnPosition, player.FallDirection);
-    //     }
-    // }
-    
-    // Player CreatePlayer(string position){
-    //     GameObject playerObject = Instantiate(PlayerPrefab, new Vector3(0,0,0), Quaternion.identity, transform);
-    //     playerObject.name = position;
-    //     Player player = playerObject.GetComponent<Player>();
-    //     player.spawnPosition = Data.SpawnPositions[position];
-    //     player.movementData = new MovementData();
-    //     Players.Add(player);
-    //     return player;
-    // }
 
     public void OnBoardRotateComplete(){
         print ("board rotate complete");

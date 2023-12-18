@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Tilemaps;
+using UnityEngine.InputSystem;
 
 public class Piece : MonoBehaviour{
     public static UnityEvent LockEvent;
@@ -17,6 +18,7 @@ public class Piece : MonoBehaviour{
 
     public float lockTime;
     public float lockDelay = 2.0f;
+    
 
     public bool isLocked;
     public bool isBeatEvent;
@@ -28,19 +30,24 @@ public class Piece : MonoBehaviour{
     public Settings settings;
     public BeatController beat;
 
+    private int rotateDirection = 0;
+    private Vector2Int moveDirection = Vector2Int.zero;
+
     void Awake(){
         game = GameObject.Find("Game").GetComponent<Game>();
+        LockEvent = new UnityEvent();
+        
+        isLocked = true;
+        isBeatEvent = false;
+        isMoveable = false;
+    }
+
+    void Start(){
         settings = game.settings;
         board = game.board;
         core = game.core;
         beat = game.beat;
-
-        LockEvent = new UnityEvent();
         beat.BeatEvent.AddListener(onBeatEvent);
-
-        isLocked = true;
-        isBeatEvent = false;
-        isMoveable = false;
     }
 
     public void Initialize(Shape shape, Tile tile, Vector3Int position, Vector2Int fallDirection){
@@ -76,19 +83,23 @@ public class Piece : MonoBehaviour{
                 Kill();
                 return;
             }
-            //Move();
+            
+            if(moveDirection != Vector2Int.zero){
+                translate(moveDirection);
+                moveDirection = Vector2Int.zero;
+            }
+
             if(beats%4 == 0) Step();
             if(isLocked) return;
         }
 
         if(isLocked) return;
-        Rotate();
+
+        if (rotateDirection != 0){
+            rotate(rotateDirection);
+            rotateDirection = 0;
+        }
         board.Set(this);
-    }
-
-    public void Move(Vector2Int direction){
-        isMoveable = false;
-
     }
 
     public void Drop(){
@@ -102,9 +113,12 @@ public class Piece : MonoBehaviour{
         if(lockTime > lockDelay) Lock();
     }
 
-    void Rotate(){
-        if(Input.GetKeyDown(KeyCode.J)) rotate(-1);
-        if(Input.GetKeyDown(KeyCode.K)) rotate(1);
+    public void Rotate(int direction){
+        rotateDirection = direction;
+    }
+
+    public void Move(Vector2Int direction){
+        moveDirection = direction;
     }
 
     void Lock(){

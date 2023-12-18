@@ -11,7 +11,7 @@
                     "id": "23bf9bae-5901-4ebf-869d-9366b7f5ef4b",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press(behavior=2)",
                     "initialStateCheck": false
                 },
                 {
@@ -20,13 +20,31 @@
                     "id": "2d291980-1acb-40f4-9226-d72ebea58b25",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press(behavior=2)",
                     "initialStateCheck": false
                 },
                 {
                     "name": "Right",
                     "type": "Button",
                     "id": "0de2456f-ff63-466e-92ed-60764c3a8353",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RotateLeft",
+                    "type": "Button",
+                    "id": "48899c5a-e418-4e37-8dda-0e2abeb2cd0c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RotateRight",
+                    "type": "Button",
+                    "id": "d70ef4af-4b5e-4375-a4e6-21287b50a02f",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -41,17 +59,6 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "keys",
-                    "action": "Drop",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "9fd54261-29c8-41e3-a9a2-281cbacfe833",
-                    "path": "<Gamepad>/buttonSouth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "pad",
                     "action": "Drop",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -119,6 +126,50 @@
                     "processors": "",
                     "groups": "pad",
                     "action": "Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b49e20f1-530b-4807-99ba-387d3bd4f2f9",
+                    "path": "<Keyboard>/j",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "keys",
+                    "action": "RotateLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ffcf8af4-e537-4479-b0e3-cac58d44dd06",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "pad",
+                    "action": "RotateLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a3d6576a-e184-4944-bd1c-8cd80335b33f",
+                    "path": "<Keyboard>/k",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "keys",
+                    "action": "RotateRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a0f5e6f6-0ad8-4c30-9976-858111e63aec",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "pad",
+                    "action": "RotateRight",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
