@@ -48,6 +48,7 @@ public class Piece : MonoBehaviour{
         core = game.core;
         beat = game.beat;
         beat.BeatEvent.AddListener(onBeatEvent);
+        lockDelay = beat.beatLength * 4;
     }
 
     public void Initialize(Shape shape, Tile tile, Vector3Int position, Vector2Int fallDirection){

@@ -34,20 +34,20 @@ public class Game : MonoBehaviour{
 
     void Start(){
         PlayerTop = GameObject.Find("PlayerTop").GetComponent<Player>();
-        // PlayerBottom = GameObject.Find("PlayerBottom").GetComponent<Player>();
+        PlayerBottom = GameObject.Find("PlayerBottom").GetComponent<Player>();
         // PlayerLeft = GameObject.Find("PlayerLeft").GetComponent<Player>();
         // PlayerRight = GameObject.Find("PlayerRight").GetComponent<Player>();
 
         Players.Add(PlayerTop);
-        // Players.Add(PlayerBottom);
+        Players.Add(PlayerBottom);
         // Players.Add(PlayerLeft);
         // Players.Add(PlayerRight);
 
         PlayerTop.isActive = true;
+        PlayerBottom.isActive = true;
 
 
         Piece.LockEvent.AddListener(OnPieceLock);
-        PlayersNewPiece();
     }
 
     void PlayersNewPiece(){

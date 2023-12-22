@@ -132,8 +132,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 50157976}
-  - component: {fileID: 50157978}
   - component: {fileID: 50157977}
+  - component: {fileID: 50157978}
   - component: {fileID: 50157979}
   m_Layer: 0
   m_Name: PlayerBottom
@@ -141,7 +141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &50157976
 Transform:
   m_ObjectHideFlags: 0
@@ -170,7 +170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: 3e69b9fed56d1439ba0457a517482d1b, type: 3}
-  m_NotificationBehavior: 2
+  m_NotificationBehavior: 0
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -202,9 +202,29 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: d70ef4af-4b5e-4375-a4e6-21287b50a02f
     m_ActionName: player/RotateRight[/Keyboard/k]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c9a3ff04-4bff-4496-97eb-f9bddbce4e5f
+    m_ActionName: bottomAndHeadToHead/Drop[/Keyboard/space,/DualSenseGamepadHID/dpad/down,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f59b093f-1e4d-413b-8206-8eed71905a98
+    m_ActionName: bottomAndHeadToHead/Left[/Keyboard/s,/DualSenseGamepadHID/dpad/left]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b4c489a0-3553-4d8f-93e9-9a4933ec1086
+    m_ActionName: bottomAndHeadToHead/Right[/Keyboard/f,/DualSenseGamepadHID/dpad/right]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 81addda3-cfe6-4df4-8f4c-205debb381ec
+    m_ActionName: bottomAndHeadToHead/RotateLeft[/Keyboard/j,/DualSenseGamepadHID/buttonWest]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 35d26600-97d3-4aab-ae0f-d4c679342781
+    m_ActionName: bottomAndHeadToHead/RotateRight[/Keyboard/k,/DualSenseGamepadHID/buttonSouth]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: keys
-  m_DefaultActionMap: player
+  m_DefaultActionMap: bottomAndHeadToHead
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &50157978
@@ -222,28 +242,28 @@ MonoBehaviour:
   activePiece: {fileID: 0}
   playerInput: {fileID: 0}
   left:
-    m_Name: 
+    m_Name: Left
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 
+    m_Id: 48755090-b9fd-4a16-b6bf-1a367b50836b
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
   right:
-    m_Name: 
+    m_Name: Right
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 
+    m_Id: 3986888d-30ed-44f7-ab3f-e5afa1e9f94b
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
   drop:
-    m_Name: 
+    m_Name: Drop
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 
+    m_Id: 5b2125ba-2598-4ba9-a9ce-74a4b92703f9
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
@@ -414,9 +434,29 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: d70ef4af-4b5e-4375-a4e6-21287b50a02f
     m_ActionName: player/RotateRight[/Keyboard/k]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c9a3ff04-4bff-4496-97eb-f9bddbce4e5f
+    m_ActionName: bottomAndHeadToHead/Drop[/Keyboard/space,/DualSenseGamepadHID/dpad/down,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f59b093f-1e4d-413b-8206-8eed71905a98
+    m_ActionName: bottomAndHeadToHead/Left[/Keyboard/s,/DualSenseGamepadHID/dpad/left]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b4c489a0-3553-4d8f-93e9-9a4933ec1086
+    m_ActionName: bottomAndHeadToHead/Right[/Keyboard/f,/DualSenseGamepadHID/dpad/right]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 81addda3-cfe6-4df4-8f4c-205debb381ec
+    m_ActionName: bottomAndHeadToHead/RotateLeft[/Keyboard/j,/DualSenseGamepadHID/buttonWest]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 35d26600-97d3-4aab-ae0f-d4c679342781
+    m_ActionName: bottomAndHeadToHead/RotateRight[/Keyboard/k,/DualSenseGamepadHID/buttonSouth]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: keys
-  m_DefaultActionMap: player
+  m_DefaultActionMap: top
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &260013438
@@ -434,28 +474,28 @@ MonoBehaviour:
   activePiece: {fileID: 0}
   playerInput: {fileID: 0}
   left:
-    m_Name: 
+    m_Name: Left
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 
+    m_Id: b8516f10-2dc9-4364-aa7f-4ef8521ff10e
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
   right:
-    m_Name: 
+    m_Name: Right
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 
+    m_Id: 4198017a-7a3a-4479-812d-0aa8e7e8e723
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
   drop:
-    m_Name: 
+    m_Name: Drop
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 
+    m_Id: 68efee62-0cb0-4f0d-b697-55104e9fca58
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
@@ -1546,8 +1586,8 @@ MonoBehaviour:
     m_ActionId: d70ef4af-4b5e-4375-a4e6-21287b50a02f
     m_ActionName: player/RotateRight[/Keyboard/k]
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: keys
-  m_DefaultActionMap: player
+  m_DefaultControlScheme: pad
+  m_DefaultActionMap: top
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &1985372158

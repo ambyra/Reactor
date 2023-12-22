@@ -12,7 +12,6 @@ public class Player : MonoBehaviour{
     public InputAction right;
     public InputAction drop;
 
-    
     public Tile playerTile; //player color
 
     public enum PlayerPosition{Top, Bottom, Left, Right};
@@ -48,6 +47,8 @@ public class Player : MonoBehaviour{
     }
 
     void checkMovement(){
+        activePiece.Move(Vector2Int.zero);
+        
         if(left.IsPressed()){
             activePiece.Move(movementData.left);
             //if(left.WasPressedThisFrame()) return;
@@ -60,12 +61,6 @@ public class Player : MonoBehaviour{
         }
     }
 
-    //void moveLeft(){activePiece.Move(movementData.left);}
-
-   // void moveRight(){activePiece.Move(movementData.right);}
-
-    //void drop(){activePiece.Drop();}
-
     void OnRotateLeft(){activePiece.Rotate(-1);}
     void OnRotateRight(){activePiece.Rotate(1);}
 
@@ -73,7 +68,6 @@ public class Player : MonoBehaviour{
         activePiece.Initialize(shape, playerTile, spawnPosition, movementData.down);
     }
 
-    //todo: removes two pieces from the list??
     public void NewPiece(){
 
         if (pieces.Count == 0) pieces = new List<int>(){0,1,2,3,4,5,6};
